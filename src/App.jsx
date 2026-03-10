@@ -5,6 +5,8 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
+const SALES_EMAIL = 'Mikhael.dukin@gmail.com'; // replace with your email
+
 // --- FIREBASE CONFIG ---
 const useFirebase = () => {
   const [db, setDb] = useState(null);
@@ -94,22 +96,37 @@ export default function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const email = e.target.email.value;
+    const role = e.target.role.value;
     setFormState('loading');
-    
-    // Simulate API delay
+
+    // Simulate API delay + send to Firestore (if configured) and open email draft
     setTimeout(async () => {
-        if (db) {
-            try {
-                await addDoc(collection(db, 'artifacts', 'layer', 'leads'), {
-                    email: e.target.email.value,
-                    role: e.target.role.value,
-                    ts: serverTimestamp()
-                });
-            } catch(e) { console.log("DB Write Simulated"); }
+      if (db) {
+        try {
+          await addDoc(collection(db, 'artifacts', 'layer', 'leads'), {
+            email,
+            role,
+            ts: serverTimestamp()
+          });
+        } catch (e) {
+          console.log("DB Write Simulated");
         }
-        setFormState('success');
-        e.target.reset();
-        setTimeout(() => setFormState('idle'), 3000);
+      }
+
+      const subject = encodeURIComponent('New Repro pilot access request');
+      const body = encodeURIComponent(`Email: ${email}\nRole: ${role}`);
+      const mailto = `mailto:${SALES_EMAIL}?subject=${subject}&body=${body}`;
+
+      try {
+        window.location.href = mailto;
+      } catch (err) {
+        console.log('mailto failed', err);
+      }
+
+      setFormState('success');
+      e.target.reset();
+      setTimeout(() => setFormState('idle'), 3000);
     }, 1500);
   };
 
