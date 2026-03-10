@@ -5,31 +5,49 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
-const SALES_EMAIL = 'Mikhael.dukin@gmail.com'; // replace with your email
-
 // --- FIREBASE CONFIG ---
 const useFirebase = () => {
   const [db, setDb] = useState(null);
+
   useEffect(() => {
-    const firebaseConfig = typeof __firebase_config !== 'undefined' 
-        ? JSON.parse(__firebase_config) 
-        : { apiKey: "demo", projectId: "demo" };
+    // Read config from Vite env variables (you set these)
+    const firebaseConfig = {
+      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+      appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    };
+
+    // If config is missing, don't try to init (site still works, just no leads stored)
+    if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
+      console.log('Firebase not configured – leads will not be stored.');
+      return;
+    }
 
     try {
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const firestore = getFirestore(app);
-        const initAuth = async () => {
-             if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
-             } else {
-                await signInAnonymously(auth);
-             }
-        };
-        initAuth();
-        onAuthStateChanged(auth, u => { if(u) setDb(firestore); });
-    } catch(e) { console.log("Firebase Local Mode"); }
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const firestore = getFirestore(app);
+
+      const initAuth = async () => {
+        try {
+          await signInAnonymously(auth);
+        } catch (err) {
+          console.log('Firebase auth failed', err);
+        }
+      };
+
+      initAuth();
+      onAuthStateChanged(auth, (u) => {
+        if (u) setDb(firestore);
+      });
+    } catch (e) {
+      console.log('Firebase init error', e);
+    }
   }, []);
+
   return db;
 };
 
@@ -93,29 +111,19 @@ const StatCard = ({ value, label }) => (
 export default function App() {
   const db = useFirebase();
   const [formState, setFormState] = useState('idle');
+  const [lastSubmission, setLastSubmission] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const role = e.target.role.value;
 
-    // Important: open `mailto:` immediately (user gesture) so browsers don't block it.
-    const subject = encodeURIComponent('New Repro pilot access request');
-    const body = encodeURIComponent(`Email: ${email}\nRole: ${role}`);
-    const mailto = `mailto:${SALES_EMAIL}?subject=${subject}&body=${body}`;
-
     setFormState('loading');
 
-    try {
-      window.location.href = mailto;
-    } catch (err) {
-      console.log('mailto failed', err);
-    }
-
-    // Best-effort lead capture (works only if Firebase is actually configured)
+    // Optional: store in Firestore if configured
     if (db) {
       try {
-        await addDoc(collection(db, 'artifacts', 'layer', 'leads'), {
+        await addDoc(collection(db, 'artifacts', 'repro', 'leads'), {
           email,
           role,
           ts: serverTimestamp()
@@ -125,6 +133,7 @@ export default function App() {
       }
     }
 
+    setLastSubmission({ email, role });
     setFormState('success');
     e.target.reset();
     setTimeout(() => setFormState('idle'), 3000);
@@ -401,7 +410,7 @@ export default function App() {
                      Join the pilot program for high-volume brands. We are accepting 5 partners for Q1 2026.
                  </p>
 
-                 <form onSubmit={handleSubmit} className="max-w-md mx-auto flex flex-col gap-4">
+                <form onSubmit={handleSubmit} className="max-w-md mx-auto flex flex-col gap-4">
                      <input name="email" type="email" placeholder="Work email" required className="w-full px-5 py-4 rounded-full text-[#2c2214] placeholder-[#b3a38f] focus:outline-none focus:ring-2 focus:ring-[#c2a476] shadow-sm bg-[#f7f2ea]" />
                      <select name="role" className="w-full px-5 py-4 rounded-full text-[#2c2214] border-r-8 border-transparent focus:outline-none focus:ring-2 focus:ring-[#c2a476] cursor-pointer bg-[#f7f2ea]">
                          <option value="" disabled selected>Select your role</option>
@@ -414,6 +423,11 @@ export default function App() {
                          {formState === 'loading' ? 'Processing...' : formState === 'success' ? 'Request Received' : 'Request Access'}
                      </button>
                  </form>
+                 {lastSubmission && (
+                   <p className="text-[#e0d4c2] text-xs mt-4">
+                     We’ll reach out to <span className="font-semibold">{lastSubmission.email}</span> ({lastSubmission.role}).
+                   </p>
+                 )}
                  <p className="text-[#b3a38f] text-xs mt-6 tracking-[0.18em] uppercase">No credit card required · SOC2 Compliant</p>
              </div>
          </div>
