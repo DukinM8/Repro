@@ -98,36 +98,36 @@ export default function App() {
     e.preventDefault();
     const email = e.target.email.value;
     const role = e.target.role.value;
+
+    // Important: open `mailto:` immediately (user gesture) so browsers don't block it.
+    const subject = encodeURIComponent('New Repro pilot access request');
+    const body = encodeURIComponent(`Email: ${email}\nRole: ${role}`);
+    const mailto = `mailto:${SALES_EMAIL}?subject=${subject}&body=${body}`;
+
     setFormState('loading');
 
-    // Simulate API delay + send to Firestore (if configured) and open email draft
-    setTimeout(async () => {
-      if (db) {
-        try {
-          await addDoc(collection(db, 'artifacts', 'layer', 'leads'), {
-            email,
-            role,
-            ts: serverTimestamp()
-          });
-        } catch (e) {
-          console.log("DB Write Simulated");
-        }
-      }
+    try {
+      window.location.href = mailto;
+    } catch (err) {
+      console.log('mailto failed', err);
+    }
 
-      const subject = encodeURIComponent('New Repro pilot access request');
-      const body = encodeURIComponent(`Email: ${email}\nRole: ${role}`);
-      const mailto = `mailto:${SALES_EMAIL}?subject=${subject}&body=${body}`;
-
+    // Best-effort lead capture (works only if Firebase is actually configured)
+    if (db) {
       try {
-        window.location.href = mailto;
-      } catch (err) {
-        console.log('mailto failed', err);
+        await addDoc(collection(db, 'artifacts', 'layer', 'leads'), {
+          email,
+          role,
+          ts: serverTimestamp()
+        });
+      } catch (e) {
+        console.log("DB Write Simulated");
       }
+    }
 
-      setFormState('success');
-      e.target.reset();
-      setTimeout(() => setFormState('idle'), 3000);
-    }, 1500);
+    setFormState('success');
+    e.target.reset();
+    setTimeout(() => setFormState('idle'), 3000);
   };
 
   return (
