@@ -1,6 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Check, ArrowRight, Zap, Layers, Shield, Smartphone, Globe, BarChart3 } from 'lucide-react';
+
+// Scroll-in animation config
+const fadeInUp = {
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+};
+const stagger = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.15 },
+  transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+};
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+};
+const itemVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
+};
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore';
@@ -120,16 +142,16 @@ export default function App() {
 
     setFormState('loading');
 
-    // Optional: store in Firestore if configured
+    // Save to Firestore (collection: "leads" – visible at top level in console)
     if (db) {
       try {
-        await addDoc(collection(db, 'artifacts', 'repro', 'leads'), {
+        await addDoc(collection(db, 'leads'), {
           email,
           role,
           ts: serverTimestamp()
         });
-      } catch (e) {
-        console.log("DB Write Simulated");
+      } catch (err) {
+        console.error('Firestore write failed:', err);
       }
     }
 
@@ -146,7 +168,7 @@ export default function App() {
       {/* HERO SECTION */}
       <section className="pt-32 pb-20 px-6 lg:pt-48 lg:pb-32 bg-[#f7f2ea] border-b border-[#e0d4c2]">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8">
+            <motion.div className="space-y-8" {...fadeInUp}>
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f1e3cf] border border-[#e0d4c2] text-[#6f4b20] text-xs font-semibold tracking-[0.2em] uppercase">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#a47c48]"></span>
                     Repro for Fashion Houses
@@ -166,23 +188,14 @@ export default function App() {
                     >
                         Start Pilot Program <ArrowRight size={18} />
                     </button>
-                    <button className="bg-transparent text-[#2c2214] border border-[#c2a476] px-8 py-4 rounded-full font-medium tracking-[0.14em] hover:bg-[#f1e3cf] transition-colors">
-                        View Lookbook
+                    <button onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })} className="bg-transparent text-[#2c2214] border border-[#c2a476] px-8 py-4 rounded-full font-medium tracking-[0.14em] hover:bg-[#f1e3cf] transition-colors">
+                        See how it works
                     </button>
                 </div>
-                <div className="pt-8 flex items-center gap-8 text-sm font-medium text-[#a1907a]">
-                    <span>TRUSTED BY</span>
-                    <div className="flex gap-6 grayscale opacity-60">
-                        {/* Placeholder Logos */}
-                        <span className="font-serif tracking-[0.3em] text-[#4a3a28] uppercase">VOGUE</span>
-                        <span className="font-sans tracking-[0.3em] text-[#4a3a28] uppercase">SSENSE</span>
-                        <span className="font-mono tracking-[0.3em] text-[#4a3a28] uppercase">ACNE</span>
-                    </div>
-                </div>
-            </div>
+            </motion.div>
             
             {/* Dashboard Visual */}
-            <div className="relative">
+            <motion.div className="relative" {...fadeInUp} transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
                 <div className="absolute -inset-4 rounded-[2rem] border border-[#e0d4c2] bg-gradient-to-tr from-[#f7f2ea] to-[#f1e3cf]"></div>
                 <div className="relative bg-[#fbf6ee] border border-[#e0d4c2] rounded-2xl shadow-2xl overflow-hidden aspect-[4/3]">
                     <div className="h-10 border-b border-[#e0d4c2] bg-[#f7f2ea] flex items-center px-4 gap-2">
@@ -208,68 +221,70 @@ export default function App() {
                          </div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </div>
       </section>
 
       {/* METRICS */}
-      <section className="py-12 bg-[#f7f2ea] border-b border-[#e0d4c2]">
+      <motion.section className="py-12 bg-[#f7f2ea] border-b border-[#e0d4c2]" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={containerVariants}>
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <StatCard value="30%" label="Reduction in Returns" />
-            <StatCard value="2.4x" label="Conversion Uplift" />
-            <StatCard value="<100ms" label="Render Latency" />
-            <StatCard value="0" label="Downloads Required" />
+            <motion.div variants={itemVariants}><StatCard value="30%" label="Reduction in Returns" /></motion.div>
+            <motion.div variants={itemVariants}><StatCard value="2.4x" label="Conversion Uplift" /></motion.div>
+            <motion.div variants={itemVariants}><StatCard value="<100ms" label="Render Latency" /></motion.div>
+            <motion.div variants={itemVariants}><StatCard value="0" label="Downloads Required" /></motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* FEATURES GRID */}
       <section id="features" className="py-24 px-6 bg-[#f3ebde]">
         <div className="max-w-7xl mx-auto">
+            <motion.div {...fadeInUp}>
             <SectionHeader 
                 badge="Capabilities" 
                 title="The Operating System for Digital Fashion." 
                 subtitle="We solved the hardest problems in computer vision so you don't have to. Integrate a complete virtual try-on stack in days, not months." 
             />
+            </motion.div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <FeatureCard 
+            <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={containerVariants}>
+                <motion.div variants={itemVariants}>                <FeatureCard 
                     icon={Smartphone}
                     title="Zero Friction"
                     desc="No app downloads or 3D scanning required. Users upload a raw photo directly on the PDP and get results instantly."
-                />
-                <FeatureCard 
+                /></motion.div>
+                <motion.div variants={itemVariants}><FeatureCard 
                     icon={Layers}
                     title="Fabric Physics"
                     desc="Our engine simulates GSM weight, drape, and texture. Silk flows like silk. Denim stacks like denim."
-                />
-                <FeatureCard 
+                /></motion.div>
+                <motion.div variants={itemVariants}><FeatureCard 
                     icon={Zap}
                     title="Confidence Filter"
                     desc="We automatically enhance lighting and exposure on user photos, turning bad selfies into studio-quality assets."
-                />
-                <FeatureCard 
+                /></motion.div>
+                <motion.div variants={itemVariants}><FeatureCard 
                     icon={Shield}
                     title="Enterprise Secure"
                     desc="SOC2 Type II compliant. User photos are processed in volatile memory and never stored on disk."
-                />
-                <FeatureCard 
+                /></motion.div>
+                <motion.div variants={itemVariants}><FeatureCard 
                     icon={Globe}
                     title="Global Edge Network"
                     desc="Renders are processed on the edge node closest to your user, ensuring sub-second latency worldwide."
-                />
-                <FeatureCard 
+                /></motion.div>
+                <motion.div variants={itemVariants}><FeatureCard 
                     icon={BarChart3}
                     title="Analytics Dashboard"
                     desc="Track how virtual try-on usage correlates with conversion rates and return reduction in real-time."
-                />
-            </div>
+                /></motion.div>
+            </motion.div>
         </div>
       </section>
 
       {/* INTEGRATION PREVIEW */}
       <section className="py-24 px-6 bg-[#f7f2ea] border-y border-[#e0d4c2]">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-            <div>
+            <motion.div {...fadeInUp}>
                 <span className="text-gray-900 font-bold text-sm uppercase tracking-wide">Developers First</span>
                 <h2 className="text-4xl font-bold text-gray-900 mt-2 mb-6">Five lines of code. <br/>Infinite possibilities.</h2>
                 <p className="text-lg text-gray-600 mb-8">
@@ -289,9 +304,9 @@ export default function App() {
                         <span className="text-gray-700 font-medium">Full TypeScript Support</span>
                     </div>
                 </div>
-            </div>
+            </motion.div>
             
-            <div className="bg-gray-900 rounded-xl shadow-2xl overflow-hidden border border-gray-800">
+            <motion.div className="bg-gray-900 rounded-xl shadow-2xl overflow-hidden border border-gray-800" {...fadeInUp} transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}>
                 <div className="flex items-center px-4 py-3 bg-gray-800 border-b border-gray-700">
                     <div className="flex gap-1.5">
                         <div className="w-3 h-3 rounded-full bg-red-500"></div>
@@ -323,85 +338,66 @@ export default function App() {
                         {'}'}
                     </pre>
                 </div>
-            </div>
+            </motion.div>
         </div>
       </section>
 
       {/* PRICING */}
       <section id="pricing" className="py-24 px-6 bg-[#f3ebde] border-b border-[#e0d4c2]">
         <div className="max-w-7xl mx-auto">
-          <div className="max-w-3xl mb-12">
+          <motion.div className="max-w-3xl mx-auto text-center mb-12" {...fadeInUp}>
             <span className="inline-block py-1 px-3 rounded-full bg-[#f1e3cf] border border-[#e0d4c2] text-[#6f4b20] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
               Pricing
             </span>
             <h2 className="text-3xl md:text-4xl font-semibold text-[#2c2214] tracking-[0.06em] mb-4">
-              Simple pricing for modern fashion.
+              One simple plan.
             </h2>
             <p className="text-[#7b6b59] text-lg">
-              Repro is designed to be an easy add-on to your PDPs — no huge license, no hidden fees. 
-              We keep monthly retainers around what you would spend on a single high‑quality shoot, not a full team.
+              Flat monthly fee. No per-try-on surprises. Everything you need to add AI virtual try-on to your store.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="rounded-3xl border border-[#e0d4c2] bg-[#fbf6ee] p-8 flex flex-col justify-between">
-              <div className="space-y-4">
-                <h3 className="text-sm font-semibold tracking-[0.18em] uppercase text-[#7b6b59]">Starter (from low hundreds / month)</h3>
-                <p className="text-sm text-[#7b6b59]">
-                  Ideal for emerging brands testing virtual try-on on a few hero categories with predictable, flat monthly pricing.
-                </p>
-                <ul className="mt-4 space-y-2 text-sm text-[#5a4c3b]">
-                  <li>· Designed for ~500 monthly visits to try‑on</li>
-                  <li>· Email support</li>
-                  <li>· 2 integration environments</li>
-                </ul>
+          <motion.div className="max-w-md mx-auto" {...fadeInUp} transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}>
+            <div className="rounded-3xl border border-[#c2a476] bg-[#fbf6ee] p-10 shadow-lg">
+              <div className="text-center mb-8">
+                <p className="text-4xl font-semibold text-[#2c2214] mb-1">$500</p>
+                <p className="text-sm text-[#7b6b59] tracking-[0.12em] uppercase">per month</p>
               </div>
-            </div>
-
-            <div className="rounded-3xl border border-[#c2a476] bg-[#f7f2ea] p-8 flex flex-col justify-between shadow-lg">
-              <div className="space-y-4">
-                <h3 className="text-sm font-semibold tracking-[0.18em] uppercase text-[#7b6b59]">Growth (around $500 / month)</h3>
-                <p className="text-sm text-[#7b6b59]">
-                  For brands rolling Repro out across collections and geographies.
-                </p>
-                <ul className="mt-4 space-y-2 text-sm text-[#5a4c3b]">
-                  <li>· Fair, all‑in monthly fee</li>
-                  <li>· Dedicated CSM</li>
-                  <li>· A/B testing support</li>
-                </ul>
-              </div>
+              <ul className="space-y-3 text-sm text-[#5a4c3b] mb-8">
+                <li className="flex items-center gap-3">
+                  <Check className="text-[#6f4b20] shrink-0" size={18} />
+                  AI try-on on your product pages — no app, no downloads
+                </li>
+                <li className="flex items-center gap-3">
+                  <Check className="text-[#6f4b20] shrink-0" size={18} />
+                  SDK for React, Vue, or vanilla JS — drop into your stack
+                </li>
+                <li className="flex items-center gap-3">
+                  <Check className="text-[#6f4b20] shrink-0" size={18} />
+                  Email support and integration help
+                </li>
+                <li className="flex items-center gap-3">
+                  <Check className="text-[#6f4b20] shrink-0" size={18} />
+                  Cancel anytime — no long-term lock-in
+                </li>
+              </ul>
               <button
                 onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
-                className="mt-8 w-full bg-[#2c2214] text-[#f7f2ea] font-semibold py-3 rounded-full hover:bg-black transition-colors tracking-[0.16em] uppercase text-xs"
+                className="w-full bg-[#2c2214] text-[#f7f2ea] font-semibold py-4 rounded-full hover:bg-black transition-colors tracking-[0.16em] uppercase text-xs"
               >
-                Talk to sales
+                Request access
               </button>
             </div>
-
-            <div className="rounded-3xl border border-[#e0d4c2] bg-[#fbf6ee] p-8 flex flex-col justify-between">
-              <div className="space-y-4">
-                <h3 className="text-sm font-semibold tracking-[0.18em] uppercase text-[#7b6b59]">Enterprise (custom retainer)</h3>
-                <p className="text-sm text-[#7b6b59]">
-                  Structured for global retailers with high volume and complex orgs.
-                </p>
-                <ul className="mt-4 space-y-2 text-sm text-[#5a4c3b]">
-                  <li>· 250k+ try‑ons / month</li>
-                  <li>· Priority SLA & support</li>
-                  <li>· Security & procurement review</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <p className="mt-8 text-xs text-[#a1907a] tracking-[0.16em] uppercase">
-            Transparent volume discounts · Cancel any time after pilot
-          </p>
+            <p className="mt-6 text-center text-xs text-[#a1907a] tracking-[0.16em] uppercase">
+              Cheaper than the rest. No hidden fees.
+            </p>
+          </motion.div>
         </div>
       </section>
 
       {/* CTA SECTION */}
       <section id="contact" className="py-24 px-6 bg-[#f3ebde]">
-         <div className="max-w-4xl mx-auto bg-[#2c2214] rounded-[2.5rem] p-12 lg:p-20 text-center relative overflow-hidden shadow-2xl">
+         <motion.div className="max-w-4xl mx-auto bg-[#2c2214] rounded-[2.5rem] p-12 lg:p-20 text-center relative overflow-hidden shadow-2xl" {...fadeInUp}>
              <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
              
              <div className="relative z-10">
@@ -430,7 +426,7 @@ export default function App() {
                  )}
                  <p className="text-[#b3a38f] text-xs mt-6 tracking-[0.18em] uppercase">No credit card required · SOC2 Compliant</p>
              </div>
-         </div>
+         </motion.div>
       </section>
 
       {/* FOOTER */}
