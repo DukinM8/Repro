@@ -81,11 +81,11 @@ const Navbar = () => (
       <div className="flex items-center gap-2">
         <span className="font-semibold text-lg tracking-[0.35em] uppercase text-[#2c2214]">REPRO</span>
       </div>
-      <div className="hidden md:flex gap-8 text-sm font-medium text-gray-600">
-        <a href="#product" className="hover:text-[#2c2214] transition-colors">Product</a>
-        <a href="#solutions" className="hover:text-[#2c2214] transition-colors">Solutions</a>
-        <a href="#developers" className="hover:text-[#2c2214] transition-colors">Developers</a>
+      <div className="hidden md:flex gap-8 text-sm font-medium text-[#7b6b59]">
+        <a href="#features" className="hover:text-[#2c2214] transition-colors">Product</a>
+        <a href="#workflow" className="hover:text-[#2c2214] transition-colors">How It Works</a>
         <a href="#pricing" className="hover:text-[#2c2214] transition-colors">Pricing</a>
+        <a href="#contact" className="hover:text-[#2c2214] transition-colors">Contact</a>
       </div>
       <div className="flex gap-4">
         <button
@@ -106,8 +106,8 @@ const SectionHeader = ({ badge, title, subtitle }) => (
                 {badge}
             </span>
         )}
-        <h2 className="text-3xl md:text-5xl font-semibold text-[#2c2214] mb-6 leading-tight tracking-[0.06em]">{title}</h2>
-        <p className="text-lg text-[#7b6b59] leading-relaxed">{subtitle}</p>
+        <h2 className="text-3xl md:text-[3.2rem] font-semibold text-[#2c2214] mb-6 leading-[1.08] tracking-[0.03em]">{title}</h2>
+        <p className="text-lg md:text-[1.15rem] text-[#7b6b59] leading-relaxed">{subtitle}</p>
     </div>
 );
 
@@ -116,15 +116,15 @@ const FeatureCard = ({ icon: Icon, title, desc }) => (
         <div className="w-12 h-12 rounded-xl bg-[#2c2214] flex items-center justify-center text-[#f7f2ea] mb-6 group-hover:bg-[#f7f2ea] group-hover:text-[#2c2214] transition-colors">
             <Icon size={24} />
         </div>
-        <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
-        <p className="text-gray-600 leading-relaxed">{desc}</p>
+        <h3 className="text-xl font-bold text-[#2c2214] mb-3">{title}</h3>
+        <p className="text-[1rem] text-[#6f5f4d] leading-relaxed">{desc}</p>
     </div>
 );
 
 const StatCard = ({ value, label }) => (
-    <div className="p-6 bg-gray-50 rounded-xl border border-gray-100 text-center">
-        <div className="text-4xl font-bold text-gray-900 mb-2">{value}</div>
-        <div className="text-sm font-semibold text-gray-500 uppercase tracking-wide">{label}</div>
+    <div className="p-6 bg-[#fbf6ee] rounded-xl border border-[#e0d4c2] text-center">
+        <div className="text-3xl md:text-4xl font-bold text-[#2c2214] mb-2">{value}</div>
+        <div className="text-sm font-semibold text-[#7b6b59] uppercase tracking-[0.14em]">{label}</div>
     </div>
 );
 
@@ -172,11 +172,11 @@ export default function App() {
                     <span className="w-1.5 h-1.5 rounded-full bg-[#a47c48]"></span>
                     Repro for Fashion Brands
                 </div>
-                <h1 className="text-5xl lg:text-7xl font-semibold text-[#2c2214] leading-[1.05] tracking-[0.04em]">
+                <h1 className="text-5xl lg:text-7xl font-semibold text-[#2c2214] leading-[1.02] tracking-[0.02em]">
                     Turn garment shots <br/>
                     <span className="text-black">into believable try-ons.</span>
                 </h1>
-                <p className="text-lg text-[#7b6b59] leading-relaxed max-w-lg">
+                <p className="text-lg md:text-[1.15rem] text-[#7b6b59] leading-relaxed max-w-xl">
                     Repro is virtual try-on infrastructure for clothing brands. We combine a shopper photo with your garment imagery, preserve pose, angle, and lighting, and apply light enhancement so the result looks usable inside your own storefront experience.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 pt-2">
@@ -209,8 +209,8 @@ export default function App() {
                             <div className="flex items-center gap-3 mb-2">
                                 <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600"><Check size={14} strokeWidth={3} /></div>
                                 <div>
-                                    <p className="text-xs font-bold text-gray-900">Render Ready</p>
-                                    <p className="text-[10px] text-gray-500">Pose, light, and fit aligned</p>
+                                    <p className="text-sm font-bold text-[#2c2214]">Render Ready</p>
+                                    <p className="text-xs text-[#7b6b59]">Pose, light, and fit aligned</p>
                                 </div>
                             </div>
                             <div className="w-full bg-[#e0d4c2] h-1.5 rounded-full overflow-hidden">
@@ -280,26 +280,26 @@ export default function App() {
       </section>
 
       {/* WORKFLOW PREVIEW */}
-      <section className="py-24 px-6 bg-[#f7f2ea] border-y border-[#e0d4c2]">
+      <section id="workflow" className="py-24 px-6 bg-[#f7f2ea] border-y border-[#e0d4c2]">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
             <motion.div {...fadeInUp}>
-                <span className="text-gray-900 font-bold text-sm uppercase tracking-wide">How Repro Works</span>
-                <h2 className="text-4xl font-bold text-gray-900 mt-2 mb-6">One person image. One garment image. One output your brand can use.</h2>
-                <p className="text-lg text-gray-600 mb-8">
+                <span className="text-[#2c2214] font-bold text-sm uppercase tracking-[0.16em]">How Repro Works</span>
+                <h2 className="text-4xl md:text-5xl font-semibold text-[#2c2214] mt-2 mb-6 leading-[1.08]">One person image. One garment image. One output your brand can use.</h2>
+                <p className="text-lg md:text-[1.1rem] text-[#6f5f4d] mb-8 leading-relaxed">
                     Repro takes the two inputs that already exist in the buying journey, then handles alignment, fit mapping, angle consistency, lighting balance, and subtle image enhancement behind the scenes. Your team decides how the final experience appears on-site.
                 </p>
                 <div className="space-y-4">
                     <div className="flex items-center gap-3">
                         <Check className="text-green-500" size={20} />
-                        <span className="text-gray-700 font-medium">Combines shopper imagery with your garment photography</span>
+                        <span className="text-[#4f4336] text-[1rem] font-medium">Combines shopper imagery with your garment photography</span>
                     </div>
                     <div className="flex items-center gap-3">
                         <Check className="text-green-500" size={20} />
-                        <span className="text-gray-700 font-medium">Respects body position, camera angle, and scene lighting</span>
+                        <span className="text-[#4f4336] text-[1rem] font-medium">Respects body position, camera angle, and scene lighting</span>
                     </div>
                     <div className="flex items-center gap-3">
                         <Check className="text-green-500" size={20} />
-                        <span className="text-gray-700 font-medium">Returns a result your product team can place inside its own UI</span>
+                        <span className="text-[#4f4336] text-[1rem] font-medium">Returns a result your product team can place inside its own UI</span>
                     </div>
                 </div>
             </motion.div>
@@ -464,39 +464,39 @@ export default function App() {
          <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
              <div className="col-span-2 md:col-span-1">
                  <span className="font-semibold text-xl tracking-[0.3em] uppercase text-[#2c2214]">REPRO</span>
-                 <p className="text-sm text-[#7b6b59] mt-4">Digital tailoring for luxury fashion.</p>
+                 <p className="text-sm text-[#7b6b59] mt-4">Virtual try-on infrastructure for modern clothing brands.</p>
              </div>
              <div>
-                 <h4 className="font-bold text-gray-900 mb-4">Product</h4>
-                 <ul className="space-y-2 text-sm text-gray-500">
-                     <li><a href="#" className="hover:text-black">Features</a></li>
-                     <li><a href="#" className="hover:text-black">Integrations</a></li>
-                     <li><a href="#" className="hover:text-black">Enterprise</a></li>
+                 <h4 className="font-bold text-[#2c2214] mb-4">Product</h4>
+                 <ul className="space-y-2 text-sm text-[#7b6b59]">
+                     <li><a href="#features" className="hover:text-[#2c2214]">Capabilities</a></li>
+                     <li><a href="#workflow" className="hover:text-[#2c2214]">Workflow</a></li>
+                     <li><a href="#pricing" className="hover:text-[#2c2214]">Pricing</a></li>
                  </ul>
              </div>
              <div>
-                 <h4 className="font-bold text-gray-900 mb-4">Resources</h4>
-                 <ul className="space-y-2 text-sm text-gray-500">
-                     <li><a href="#" className="hover:text-black">Documentation</a></li>
-                     <li><a href="#" className="hover:text-black">API Reference</a></li>
-                     <li><a href="#" className="hover:text-black">Status</a></li>
+                 <h4 className="font-bold text-[#2c2214] mb-4">Why Repro</h4>
+                 <ul className="space-y-2 text-sm text-[#7b6b59]">
+                     <li><span>Person + garment image pairing</span></li>
+                     <li><span>Pose, angle, and lighting alignment</span></li>
+                     <li><span>Brand-controlled frontend delivery</span></li>
                  </ul>
              </div>
              <div>
-                 <h4 className="font-bold text-gray-900 mb-4">Company</h4>
-                 <ul className="space-y-2 text-sm text-gray-500">
-                     <li><a href="#" className="hover:text-black">About</a></li>
-                     <li><a href="#" className="hover:text-black">Blog</a></li>
-                     <li><a href="#" className="hover:text-black">Contact</a></li>
+                 <h4 className="font-bold text-[#2c2214] mb-4">Company</h4>
+                 <ul className="space-y-2 text-sm text-[#7b6b59]">
+                     <li><a href="#contact" className="hover:text-[#2c2214]">Contact Sales</a></li>
+                     <li><a href="#pricing" className="hover:text-[#2c2214]">Pilot Program</a></li>
+                     <li><a href="#workflow" className="hover:text-[#2c2214]">See How It Works</a></li>
                  </ul>
              </div>
          </div>
-         <div className="max-w-7xl mx-auto border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+         <div className="max-w-7xl mx-auto border-t border-[#e0d4c2] pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-[#a1907a]">
              <p>© 2026 Repro Technologies Inc.</p>
              <div className="flex gap-6 mt-4 md:mt-0">
-                 <a href="#" className="hover:text-gray-600">Privacy</a>
-                 <a href="#" className="hover:text-gray-600">Terms</a>
-                 <a href="#" className="hover:text-gray-600">Security</a>
+                 <a href="#contact" className="hover:text-[#6f4b20]">Privacy</a>
+                 <a href="#contact" className="hover:text-[#6f4b20]">Terms</a>
+                 <a href="#contact" className="hover:text-[#6f4b20]">Security</a>
              </div>
          </div>
       </footer>
