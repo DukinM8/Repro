@@ -88,7 +88,6 @@ const Navbar = () => (
         <a href="#pricing" className="hover:text-[#2c2214] transition-colors">Pricing</a>
       </div>
       <div className="flex gap-4">
-        <button className="text-sm font-medium text-gray-600 hover:text-[#2c2214]">Log In</button>
         <button
           onClick={() => document.getElementById('contact').scrollIntoView({behavior: 'smooth'})}
           className="border border-[#a47c48] text-[#2c2214] px-5 py-2.5 rounded-full text-sm font-medium hover:bg-[#a47c48] hover:text-white transition-colors"
@@ -171,15 +170,14 @@ export default function App() {
             <motion.div className="space-y-8" {...fadeInUp}>
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f1e3cf] border border-[#e0d4c2] text-[#6f4b20] text-xs font-semibold tracking-[0.2em] uppercase">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#a47c48]"></span>
-                    Repro for Fashion Houses
+                    Repro for Fashion Brands
                 </div>
                 <h1 className="text-5xl lg:text-7xl font-semibold text-[#2c2214] leading-[1.05] tracking-[0.04em]">
-                    Fit is not a <br/>
-                    <span className="text-black">Guessing Game.</span>
+                    Turn garment shots <br/>
+                    <span className="text-black">into believable try-ons.</span>
                 </h1>
                 <p className="text-lg text-[#7b6b59] leading-relaxed max-w-lg">
-                    Repro is the enterprise infrastructure for Virtual Try-On. 
-                    We help fashion brands reduce returns and increase conversion with physics-based simulation.
+                    Repro is virtual try-on infrastructure for clothing brands. We combine a shopper photo with your garment imagery, preserve pose, angle, and lighting, and apply light enhancement so the result looks usable inside your own storefront experience.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 pt-2">
                     <button
@@ -205,14 +203,14 @@ export default function App() {
                         <div className="ml-auto text-xs font-mono text-[#a1907a] uppercase tracking-[0.18em]">preview.repro.studio</div>
                     </div>
                     <div className="p-1 relative h-full">
-                         <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1600&auto=format&fit=crop" className="w-full h-full object-cover rounded-b-lg" alt="Editorial fashion layout" />
+                         <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1600&auto=format&fit=crop" className="w-full h-full object-cover rounded-b-lg" alt="Fashion campaign preview" />
                          {/* Floating Widget */}
                          <div className="absolute bottom-8 left-8 bg-white p-4 rounded-xl shadow-xl border border-gray-100 max-w-xs animate-bounce-slow">
                             <div className="flex items-center gap-3 mb-2">
                                 <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600"><Check size={14} strokeWidth={3} /></div>
                                 <div>
-                                    <p className="text-xs font-bold text-gray-900">Analysis Complete</p>
-                                    <p className="text-[10px] text-gray-500">Fabric drape simulated</p>
+                                    <p className="text-xs font-bold text-gray-900">Render Ready</p>
+                                    <p className="text-[10px] text-gray-500">Pose, light, and fit aligned</p>
                                 </div>
                             </div>
                             <div className="w-full bg-[#e0d4c2] h-1.5 rounded-full overflow-hidden">
@@ -228,10 +226,10 @@ export default function App() {
       {/* METRICS */}
       <motion.section className="py-12 bg-[#f7f2ea] border-b border-[#e0d4c2]" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={containerVariants}>
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <motion.div variants={itemVariants}><StatCard value="30%" label="Reduction in Returns" /></motion.div>
-            <motion.div variants={itemVariants}><StatCard value="2.4x" label="Conversion Uplift" /></motion.div>
-            <motion.div variants={itemVariants}><StatCard value="<100ms" label="Render Latency" /></motion.div>
-            <motion.div variants={itemVariants}><StatCard value="0" label="Downloads Required" /></motion.div>
+            <motion.div variants={itemVariants}><StatCard value="2 Images" label="Person Plus Garment" /></motion.div>
+            <motion.div variants={itemVariants}><StatCard value="1 API" label="Into Your Frontend" /></motion.div>
+            <motion.div variants={itemVariants}><StatCard value="Light Touch" label="Image Enhancement" /></motion.div>
+            <motion.div variants={itemVariants}><StatCard value="Brand Owned" label="UX Stays Yours" /></motion.div>
         </div>
       </motion.section>
 
@@ -241,102 +239,133 @@ export default function App() {
             <motion.div {...fadeInUp}>
             <SectionHeader 
                 badge="Capabilities" 
-                title="The Operating System for Digital Fashion." 
-                subtitle="We solved the hardest problems in computer vision so you don't have to. Integrate a complete virtual try-on stack in days, not months." 
+                title="The Try-On Engine Behind Your Existing Storefront." 
+                subtitle="Repro is not a replacement for your frontend. It is the computer vision layer that takes a person image and a garment image, matches them realistically, and hands the result back to your product experience." 
             />
             </motion.div>
             
             <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={containerVariants}>
                 <motion.div variants={itemVariants}>                <FeatureCard 
                     icon={Smartphone}
-                    title="Zero Friction"
-                    desc="No app downloads or 3D scanning required. Users upload a raw photo directly on the PDP and get results instantly."
+                    title="Two Inputs In"
+                    desc="A shopper uploads a photo. Your catalog provides the garment image. Repro handles the pairing without asking the customer to scan their body or install anything."
                 /></motion.div>
                 <motion.div variants={itemVariants}><FeatureCard 
                     icon={Layers}
-                    title="Fabric Physics"
-                    desc="Our engine simulates GSM weight, drape, and texture. Silk flows like silk. Denim stacks like denim."
+                    title="Angle and Fit Matching"
+                    desc="We align the garment to the person while respecting pose, perspective, and how the clothing should sit on the body instead of flatly pasting one image over another."
                 /></motion.div>
                 <motion.div variants={itemVariants}><FeatureCard 
                     icon={Zap}
-                    title="Confidence Filter"
-                    desc="We automatically enhance lighting and exposure on user photos, turning bad selfies into studio-quality assets."
+                    title="Lighting Correction"
+                    desc="Repro lightly improves exposure and visual consistency so the output looks cleaner, while avoiding the overprocessed look that breaks trust."
                 /></motion.div>
                 <motion.div variants={itemVariants}><FeatureCard 
                     icon={Shield}
-                    title="Enterprise Secure"
-                    desc="SOC2 Type II compliant. User photos are processed in volatile memory and never stored on disk."
+                    title="Frontend Agnostic"
+                    desc="You keep control of the customer-facing interface. Repro is the engine your team plugs into Shopify, custom PDPs, apps, or internal tools."
                 /></motion.div>
                 <motion.div variants={itemVariants}><FeatureCard 
                     icon={Globe}
-                    title="Global Edge Network"
-                    desc="Renders are processed on the edge node closest to your user, ensuring sub-second latency worldwide."
+                    title="Brand Ready Outputs"
+                    desc="The result is built to drop into your own purchase flow, campaign tooling, or product page design without forcing Repro branding onto the experience."
                 /></motion.div>
                 <motion.div variants={itemVariants}><FeatureCard 
                     icon={BarChart3}
-                    title="Analytics Dashboard"
-                    desc="Track how virtual try-on usage correlates with conversion rates and return reduction in real-time."
+                    title="Commerce Focused"
+                    desc="The point is simple: help brands show a more believable preview, reduce hesitation, and give shoppers more confidence before they buy."
                 /></motion.div>
             </motion.div>
         </div>
       </section>
 
-      {/* INTEGRATION PREVIEW */}
+      {/* WORKFLOW PREVIEW */}
       <section className="py-24 px-6 bg-[#f7f2ea] border-y border-[#e0d4c2]">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
             <motion.div {...fadeInUp}>
-                <span className="text-gray-900 font-bold text-sm uppercase tracking-wide">Developers First</span>
-                <h2 className="text-4xl font-bold text-gray-900 mt-2 mb-6">Five lines of code. <br/>Infinite possibilities.</h2>
+                <span className="text-gray-900 font-bold text-sm uppercase tracking-wide">How Repro Works</span>
+                <h2 className="text-4xl font-bold text-gray-900 mt-2 mb-6">One person image. One garment image. One output your brand can use.</h2>
                 <p className="text-lg text-gray-600 mb-8">
-                    Repro is headless by design. Whether you are on Shopify, Salesforce, or a custom Next.js stack, our SDK drops in without disrupting your existing architecture.
+                    Repro takes the two inputs that already exist in the buying journey, then handles alignment, fit mapping, angle consistency, lighting balance, and subtle image enhancement behind the scenes. Your team decides how the final experience appears on-site.
                 </p>
                 <div className="space-y-4">
                     <div className="flex items-center gap-3">
                         <Check className="text-green-500" size={20} />
-                        <span className="text-gray-700 font-medium">React, Vue, and Vanilla JS SDKs</span>
+                        <span className="text-gray-700 font-medium">Combines shopper imagery with your garment photography</span>
                     </div>
                     <div className="flex items-center gap-3">
                         <Check className="text-green-500" size={20} />
-                        <span className="text-gray-700 font-medium">Webhooks for Order Analysis</span>
+                        <span className="text-gray-700 font-medium">Respects body position, camera angle, and scene lighting</span>
                     </div>
                     <div className="flex items-center gap-3">
                         <Check className="text-green-500" size={20} />
-                        <span className="text-gray-700 font-medium">Full TypeScript Support</span>
+                        <span className="text-gray-700 font-medium">Returns a result your product team can place inside its own UI</span>
                     </div>
                 </div>
             </motion.div>
             
-            <motion.div className="bg-gray-900 rounded-xl shadow-2xl overflow-hidden border border-gray-800" {...fadeInUp} transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}>
-                <div className="flex items-center px-4 py-3 bg-gray-800 border-b border-gray-700">
-                    <div className="flex gap-1.5">
-                        <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                        <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                        <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            <motion.div className="rounded-[2rem] border border-[#d8cab7] bg-[#fbf6ee] p-6 shadow-2xl" {...fadeInUp} transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}>
+                <div className="grid gap-4">
+                    <div className="rounded-[1.5rem] border border-[#e0d4c2] bg-[#f7f2ea] p-5">
+                        <div className="flex items-center justify-between mb-4">
+                            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f4b20]">Input Pair</span>
+                            <span className="text-xs text-[#a1907a]">Step 01</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="rounded-[1.25rem] overflow-hidden bg-[#e8dccb] aspect-[4/5]">
+                                <img
+                                  src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=900&auto=format&fit=crop"
+                                  alt="Customer portrait input"
+                                  className="h-full w-full object-cover"
+                                />
+                            </div>
+                            <div className="rounded-[1.25rem] overflow-hidden bg-[#e8dccb] aspect-[4/5]">
+                                <img
+                                  src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=900&auto=format&fit=crop"
+                                  alt="Garment image input"
+                                  className="h-full w-full object-cover"
+                                />
+                            </div>
+                        </div>
                     </div>
-                    <span className="ml-4 text-xs text-gray-400 font-mono">ProductPage.tsx</span>
-                </div>
-                <div className="p-6 overflow-x-auto">
-                    <pre className="font-mono text-sm leading-relaxed">
-                        <span className="text-purple-400">import</span> {'{ Layer }'} <span className="text-purple-400">from</span> <span className="text-green-400">'@layer/react'</span>;
-                        {'\n\n'}
-                        <span className="text-blue-400">export default function</span> <span className="text-yellow-200">Product</span>() {'{'}
-                        {'\n'}
-                        &nbsp;&nbsp;<span className="text-purple-400">return</span> (
-                        {'\n'}
-                        &nbsp;&nbsp;&nbsp;&nbsp;{'<'}<span className="text-yellow-200">Layer</span>
-                        {'\n'}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-300">apiKey</span>=<span className="text-green-400">"pk_live_..."</span>
-                        {'\n'}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-300">productId</span>={'{'}<span className="text-purple-400">product.id</span>{'}'}
-                        {'\n'}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-300">theme</span>=<span className="text-green-400">"light"</span>
-                        {'\n'}
-                        &nbsp;&nbsp;&nbsp;&nbsp;{'/>'}
-                        {'\n'}
-                        &nbsp;&nbsp;);
-                        {'\n'}
-                        {'}'}
-                    </pre>
+
+                    <div className="rounded-[1.5rem] border border-[#2c2214] bg-[#2c2214] p-5 text-[#f7f2ea]">
+                        <div className="flex items-center justify-between mb-4">
+                            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#e0d4c2]">Repro Engine</span>
+                            <span className="text-xs text-[#b3a38f]">Step 02</span>
+                        </div>
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between rounded-full bg-white/10 px-4 py-3">
+                                <span className="text-sm">Pose and body alignment</span>
+                                <span className="text-xs text-[#c2a476]">Complete</span>
+                            </div>
+                            <div className="flex items-center justify-between rounded-full bg-white/10 px-4 py-3">
+                                <span className="text-sm">Garment contour and angle match</span>
+                                <span className="text-xs text-[#c2a476]">Complete</span>
+                            </div>
+                            <div className="flex items-center justify-between rounded-full bg-white/10 px-4 py-3">
+                                <span className="text-sm">Lighting cleanup and fit render</span>
+                                <span className="text-xs text-[#c2a476]">Ready for delivery</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="rounded-[1.5rem] border border-[#e0d4c2] bg-white p-5">
+                        <div className="flex items-center justify-between mb-4">
+                            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f4b20]">Output Preview</span>
+                            <span className="text-xs text-[#a1907a]">Step 03</span>
+                        </div>
+                        <div className="rounded-[1.25rem] overflow-hidden aspect-[16/10] bg-[#e8dccb] relative">
+                            <img
+                              src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=1200&auto=format&fit=crop"
+                              alt="Generated try-on preview"
+                              className="h-full w-full object-cover"
+                            />
+                            <div className="absolute bottom-4 left-4 rounded-full bg-[#f7f2ea]/95 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#2c2214] shadow-lg">
+                                Ready for PDP placement
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </motion.div>
         </div>
@@ -408,12 +437,13 @@ export default function App() {
 
                 <form onSubmit={handleSubmit} className="max-w-md mx-auto flex flex-col gap-4">
                      <input name="email" type="email" placeholder="Work email" required className="w-full px-5 py-4 rounded-full text-[#2c2214] placeholder-[#b3a38f] focus:outline-none focus:ring-2 focus:ring-[#c2a476] shadow-sm bg-[#f7f2ea]" />
-                     <select name="role" className="w-full px-5 py-4 rounded-full text-[#2c2214] border-r-8 border-transparent focus:outline-none focus:ring-2 focus:ring-[#c2a476] cursor-pointer bg-[#f7f2ea]">
-                         <option value="" disabled selected>Select your role</option>
-                         <option value="Executive">Executive / Founder</option>
-                         <option value="Product">Product Manager</option>
-                         <option value="Engineering">Engineering / IT</option>
-                     </select>
+                     <input
+                       name="role"
+                       type="text"
+                       placeholder="Your role"
+                       required
+                       className="w-full px-5 py-4 rounded-full text-[#2c2214] placeholder-[#b3a38f] focus:outline-none focus:ring-2 focus:ring-[#c2a476] shadow-sm bg-[#f7f2ea]"
+                     />
                      
                      <button type="submit" disabled={formState !== 'idle'} className="w-full bg-[#c2a476] text-[#2c2214] font-semibold py-4 rounded-full hover:bg-[#b18d5f] transition-colors shadow-lg tracking-[0.18em] uppercase text-xs">
                          {formState === 'loading' ? 'Processing...' : formState === 'success' ? 'Request Received' : 'Request Access'}
