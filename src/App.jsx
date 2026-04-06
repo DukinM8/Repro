@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Check, ArrowRight, Zap, Layers, Shield, Smartphone, Globe, BarChart3 } from 'lucide-react';
+const MotionDiv = motion.div;
 
 // Scroll-in animation config
 const fadeInUp = {
@@ -8,12 +9,6 @@ const fadeInUp = {
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, amount: 0.2 },
   transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-};
-const stagger = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.15 },
-  transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
 };
 const containerVariants = {
   hidden: {},
@@ -24,7 +19,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
 };
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 // --- FIREBASE CONFIG ---
@@ -167,131 +162,203 @@ export default function App() {
       {/* HERO SECTION */}
       <section className="pt-32 pb-20 px-6 lg:pt-48 lg:pb-32 bg-[#f7f2ea] border-b border-[#e0d4c2]">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div className="space-y-8" {...fadeInUp}>
+            <MotionDiv className="space-y-8" {...fadeInUp}>
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f1e3cf] border border-[#e0d4c2] text-[#6f4b20] text-xs font-semibold tracking-[0.2em] uppercase">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#a47c48]"></span>
                     Repro for Fashion Brands
                 </div>
                 <h1 className="text-5xl lg:text-7xl font-semibold text-[#2c2214] leading-[1.02] tracking-[0.02em]">
-                    Turn garment shots <br/>
-                    <span className="text-black">into believable try-ons.</span>
+                    Let shoppers see <br/>
+                    <span className="text-black">products on themselves.</span>
                 </h1>
                 <p className="text-lg md:text-[1.15rem] text-[#7b6b59] leading-relaxed max-w-xl">
-                    Repro is virtual try-on infrastructure for clothing brands. We combine a shopper photo with your garment imagery, preserve pose, angle, and lighting, and apply light enhancement so the result looks usable inside your own storefront experience.
+                    Repro is virtual try-on infrastructure for clothing brands. A shopper uploads a photo, selects clothing or shoes from your catalog, and sees the product on themselves inside your own site or app.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 pt-2">
                     <button
                       onClick={() => document.getElementById('contact').scrollIntoView({behavior:'smooth'})}
                       className="bg-[#2c2214] text-[#f7f2ea] px-8 py-4 rounded-full font-semibold tracking-[0.16em] hover:bg-black transition-colors shadow-lg shadow-black/20 flex items-center justify-center gap-2"
                     >
-                        Start Pilot Program <ArrowRight size={18} />
+                        Talk To Sales <ArrowRight size={18} />
                     </button>
                     <button onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })} className="bg-transparent text-[#2c2214] border border-[#c2a476] px-8 py-4 rounded-full font-medium tracking-[0.14em] hover:bg-[#f1e3cf] transition-colors">
                         See how it works
                     </button>
                 </div>
-            </motion.div>
+            </MotionDiv>
             
-            {/* Dashboard Visual */}
-            <motion.div className="relative" {...fadeInUp} transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
+            {/* Storefront Visual */}
+            <MotionDiv className="relative space-y-4" {...fadeInUp} transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
                 <div className="absolute -inset-4 rounded-[2rem] border border-[#e0d4c2] bg-gradient-to-tr from-[#f7f2ea] to-[#f1e3cf]"></div>
                 <div className="relative bg-[#fbf6ee] border border-[#e0d4c2] rounded-2xl shadow-2xl overflow-hidden aspect-[4/3]">
                     <div className="h-10 border-b border-[#e0d4c2] bg-[#f7f2ea] flex items-center px-4 gap-2">
                         <div className="w-3 h-3 rounded-full bg-red-400"></div>
                         <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
                         <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                        <div className="ml-auto text-xs font-mono text-[#a1907a] uppercase tracking-[0.18em]">preview.repro.studio</div>
+                        <div className="ml-auto text-xs font-mono text-[#a1907a] uppercase tracking-[0.18em]">store-preview.product-page</div>
                     </div>
-                    <div className="p-1 relative h-full">
-                         <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1600&auto=format&fit=crop" className="w-full h-full object-cover rounded-b-lg" alt="Fashion campaign preview" />
-                         {/* Floating Widget */}
-                         <div className="absolute bottom-8 left-8 bg-white p-4 rounded-xl shadow-xl border border-gray-100 max-w-xs animate-bounce-slow">
-                            <div className="flex items-center gap-3 mb-2">
-                                <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600"><Check size={14} strokeWidth={3} /></div>
-                                <div>
-                                    <p className="text-sm font-bold text-[#2c2214]">Render Ready</p>
-                                    <p className="text-xs text-[#7b6b59]">Pose, light, and fit aligned</p>
+                    <div className="p-4 h-full bg-[radial-gradient(circle_at_top,#fff7ec,transparent_55%)]">
+                         <div className="rounded-[1.25rem] border border-[#e0d4c2] bg-white p-3 shadow-sm h-full overflow-hidden">
+                            <div className="flex items-center justify-between border-b border-[#efe5d9] pb-2.5 mb-3">
+                                <div className="space-y-1.5">
+                                    <div className="h-2 w-20 rounded-full bg-[#ded2c2]"></div>
+                                    <div className="h-2 w-12 rounded-full bg-[#e9dfd2]"></div>
+                                </div>
+                                <div className="hidden sm:flex gap-2">
+                                    <div className="h-6 w-10 rounded-full bg-[#f4ecdf]"></div>
+                                    <div className="h-6 w-10 rounded-full bg-[#f4ecdf]"></div>
+                                    <div className="h-6 w-10 rounded-full bg-[#f4ecdf]"></div>
                                 </div>
                             </div>
-                            <div className="w-full bg-[#e0d4c2] h-1.5 rounded-full overflow-hidden">
-                                <div className="bg-[#a47c48] h-full w-[92%]"></div>
+
+                            <div className="grid h-[calc(100%-3rem)] grid-cols-[1.1fr_0.9fr] gap-3">
+                                <div className="rounded-[1rem] overflow-hidden bg-[#efe5d8] relative min-h-0">
+                                    <img
+                                      src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1200&auto=format&fit=crop"
+                                      alt="Generic product page product"
+                                      className="h-full w-full object-cover"
+                                    />
+                                    <div className="absolute left-3 top-3 rounded-full bg-white/90 px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.12em] text-[#6f4b20]">
+                                        Sample PDP
+                                    </div>
+                                </div>
+
+                                <div className="min-h-0 overflow-hidden flex flex-col">
+                                    <div className="space-y-2 mb-3">
+                                        <div className="h-2.5 w-16 rounded-full bg-[#d9ccb9]"></div>
+                                        <div className="h-4 w-32 rounded-full bg-[#cfc1ad]"></div>
+                                        <div className="h-3 w-16 rounded-full bg-[#e8ddce]"></div>
+                                    </div>
+
+                                    <div className="rounded-[1rem] border border-[#e6dbcc] bg-[#fbf7f0] p-3 mb-3">
+                                        <p className="text-[9px] uppercase tracking-[0.14em] text-[#a1907a]">Size</p>
+                                        <div className="mt-2 flex flex-wrap gap-1.5">
+                                            <span className="rounded-full border border-[#d8cab7] bg-white px-2.5 py-1 text-[9px] text-[#4f4336]">XS</span>
+                                            <span className="rounded-full border border-[#d8cab7] bg-white px-2.5 py-1 text-[9px] text-[#4f4336]">S</span>
+                                            <span className="rounded-full border border-[#2c2214] bg-[#2c2214] px-2.5 py-1 text-[9px] text-[#f7f2ea]">M</span>
+                                            <span className="rounded-full border border-[#d8cab7] bg-white px-2.5 py-1 text-[9px] text-[#4f4336]">L</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2 mb-3">
+                                        <button className="w-full rounded-full border border-[#2c2214] bg-[#2c2214] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#f7f2ea]">
+                                            Add To Cart
+                                        </button>
+                                        <button className="w-full rounded-full border border-[#c2a476] bg-[#f1e3cf] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#2c2214]">
+                                            Try This On
+                                        </button>
+                                    </div>
+
+                                    <div className="mt-auto rounded-[1rem] border border-[#e6dbcc] bg-[#fbf7f0] p-3 space-y-3">
+                                        <div>
+                                            <p className="text-[9px] uppercase tracking-[0.14em] text-[#a1907a]">Color</p>
+                                            <div className="mt-2 flex gap-2">
+                                                <span className="h-4 w-4 rounded-full border border-[#d8cab7] bg-[#c7b39a]"></span>
+                                                <span className="h-4 w-4 rounded-full border border-[#d8cab7] bg-[#2f3640]"></span>
+                                                <span className="h-4 w-4 rounded-full border border-[#d8cab7] bg-[#efe8dc]"></span>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <div className="h-2 w-full rounded-full bg-[#e6dbcc]"></div>
+                                            <div className="h-2 w-[86%] rounded-full bg-[#e6dbcc]"></div>
+                                            <div className="h-2 w-[70%] rounded-full bg-[#e6dbcc]"></div>
+                                        </div>
+                                        <div className="rounded-[0.85rem] border border-[#eadfce] bg-white px-3 py-2">
+                                            <p className="text-[9px] uppercase tracking-[0.12em] text-[#6f4b20]">Free shipping over $100</p>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                          </div>
                     </div>
                 </div>
-            </motion.div>
+                <div className="relative ml-auto max-w-[220px] rounded-[1rem] border border-[#e0d4c2] bg-white/96 p-3 shadow-xl">
+                    <div className="flex items-start gap-2">
+                        <div className="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center text-green-600 shrink-0">
+                            <Check size={12} strokeWidth={3} />
+                        </div>
+                        <div>
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#2c2214]">Fits Existing Flow</p>
+                            <p className="mt-1 text-[10px] leading-relaxed text-[#7b6b59]">
+                                One extra action on a normal product page.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </MotionDiv>
         </div>
       </section>
 
       {/* METRICS */}
       <motion.section className="py-12 bg-[#f7f2ea] border-b border-[#e0d4c2]" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={containerVariants}>
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <motion.div variants={itemVariants}><StatCard value="2 Images" label="Person Plus Garment" /></motion.div>
-            <motion.div variants={itemVariants}><StatCard value="1 API" label="Into Your Frontend" /></motion.div>
-            <motion.div variants={itemVariants}><StatCard value="Light Touch" label="Image Enhancement" /></motion.div>
-            <motion.div variants={itemVariants}><StatCard value="Brand Owned" label="UX Stays Yours" /></motion.div>
+            <MotionDiv variants={itemVariants}><StatCard value="1 Photo" label="Uploaded by Shopper" /></MotionDiv>
+            <MotionDiv variants={itemVariants}><StatCard value="Any SKU" label="Selected from Catalog" /></MotionDiv>
+            <MotionDiv variants={itemVariants}><StatCard value="Store Native" label="Runs in Your UX" /></MotionDiv>
+            <MotionDiv variants={itemVariants}><StatCard value="Light Touch" label="Image Enhancement" /></MotionDiv>
         </div>
       </motion.section>
 
       {/* FEATURES GRID */}
       <section id="features" className="py-24 px-6 bg-[#f3ebde]">
         <div className="max-w-7xl mx-auto">
-            <motion.div {...fadeInUp}>
+            <MotionDiv {...fadeInUp}>
             <SectionHeader 
                 badge="Capabilities" 
                 title="The Try-On Engine Behind Your Existing Storefront." 
-                subtitle="Repro is not a replacement for your frontend. It is the computer vision layer that takes a person image and a garment image, matches them realistically, and hands the result back to your product experience." 
+                subtitle="Repro is not a replacement for your frontend. It is the computer vision layer that lets shoppers upload their photo, choose a product from your catalog, and preview that item on themselves inside your existing experience." 
             />
-            </motion.div>
+            </MotionDiv>
             
-            <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={containerVariants}>
-                <motion.div variants={itemVariants}>                <FeatureCard 
+            <MotionDiv className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={containerVariants}>
+                <MotionDiv variants={itemVariants}>                <FeatureCard 
                     icon={Smartphone}
-                    title="Two Inputs In"
-                    desc="A shopper uploads a photo. Your catalog provides the garment image. Repro handles the pairing without asking the customer to scan their body or install anything."
-                /></motion.div>
-                <motion.div variants={itemVariants}><FeatureCard 
+                    title="Simple Shopper Flow"
+                    desc="Customers upload one photo of themselves and pick the clothing or shoes they want to try. No scanning workflow, no separate app, no extra friction."
+                /></MotionDiv>
+                <MotionDiv variants={itemVariants}><FeatureCard 
                     icon={Layers}
-                    title="Angle and Fit Matching"
-                    desc="We align the garment to the person while respecting pose, perspective, and how the clothing should sit on the body instead of flatly pasting one image over another."
-                /></motion.div>
-                <motion.div variants={itemVariants}><FeatureCard 
+                    title="Catalog Product Mapping"
+                    desc="Repro takes the selected catalog item and maps it onto the shopper realistically, instead of flattening product imagery into a fake overlay."
+                /></MotionDiv>
+                <MotionDiv variants={itemVariants}><FeatureCard 
                     icon={Zap}
                     title="Lighting Correction"
                     desc="Repro lightly improves exposure and visual consistency so the output looks cleaner, while avoiding the overprocessed look that breaks trust."
-                /></motion.div>
-                <motion.div variants={itemVariants}><FeatureCard 
+                /></MotionDiv>
+                <MotionDiv variants={itemVariants}><FeatureCard 
                     icon={Shield}
                     title="Frontend Agnostic"
                     desc="You keep control of the customer-facing interface. Repro is the engine your team plugs into Shopify, custom PDPs, apps, or internal tools."
-                /></motion.div>
-                <motion.div variants={itemVariants}><FeatureCard 
+                /></MotionDiv>
+                <MotionDiv variants={itemVariants}><FeatureCard 
                     icon={Globe}
                     title="Brand Ready Outputs"
-                    desc="The result is built to drop into your own purchase flow, campaign tooling, or product page design without forcing Repro branding onto the experience."
-                /></motion.div>
-                <motion.div variants={itemVariants}><FeatureCard 
+                    desc="The result fits into your own product pages and purchase flow without forcing a separate Repro-branded interface onto your customers."
+                /></MotionDiv>
+                <MotionDiv variants={itemVariants}><FeatureCard 
                     icon={BarChart3}
                     title="Commerce Focused"
-                    desc="The point is simple: help brands show a more believable preview, reduce hesitation, and give shoppers more confidence before they buy."
-                /></motion.div>
-            </motion.div>
+                    desc="The point is simple: let shoppers preview products on themselves so they can buy with more confidence."
+                /></MotionDiv>
+            </MotionDiv>
         </div>
       </section>
 
       {/* WORKFLOW PREVIEW */}
       <section id="workflow" className="py-24 px-6 bg-[#f7f2ea] border-y border-[#e0d4c2]">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div {...fadeInUp}>
+            <MotionDiv {...fadeInUp}>
                 <span className="text-[#2c2214] font-bold text-sm uppercase tracking-[0.16em]">How Repro Works</span>
-                <h2 className="text-4xl md:text-5xl font-semibold text-[#2c2214] mt-2 mb-6 leading-[1.08]">One person image. One garment image. One output your brand can use.</h2>
+                <h2 className="text-4xl md:text-5xl font-semibold text-[#2c2214] mt-2 mb-6 leading-[1.08]">A shopper uploads a photo, picks a product, and previews it on themselves.</h2>
                 <p className="text-lg md:text-[1.1rem] text-[#6f5f4d] mb-8 leading-relaxed">
-                    Repro takes the two inputs that already exist in the buying journey, then handles alignment, fit mapping, angle consistency, lighting balance, and subtle image enhancement behind the scenes. Your team decides how the final experience appears on-site.
+                    Repro uses the shopper photo together with the selected catalog item, then handles alignment, perspective, lighting balance, and subtle enhancement behind the scenes. Your team still owns the storefront and customer experience.
                 </p>
                 <div className="space-y-4">
                     <div className="flex items-center gap-3">
                         <Check className="text-green-500" size={20} />
-                        <span className="text-[#4f4336] text-[1rem] font-medium">Combines shopper imagery with your garment photography</span>
+                        <span className="text-[#4f4336] text-[1rem] font-medium">Uses the shopper photo together with the chosen catalog product</span>
                     </div>
                     <div className="flex items-center gap-3">
                         <Check className="text-green-500" size={20} />
@@ -299,16 +366,16 @@ export default function App() {
                     </div>
                     <div className="flex items-center gap-3">
                         <Check className="text-green-500" size={20} />
-                        <span className="text-[#4f4336] text-[1rem] font-medium">Returns a result your product team can place inside its own UI</span>
+                        <span className="text-[#4f4336] text-[1rem] font-medium">Returns a result inside the brand's own site or app flow</span>
                     </div>
                 </div>
-            </motion.div>
+            </MotionDiv>
             
-            <motion.div className="rounded-[2rem] border border-[#d8cab7] bg-[#fbf6ee] p-6 shadow-2xl" {...fadeInUp} transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}>
+            <MotionDiv className="rounded-[2rem] border border-[#d8cab7] bg-[#fbf6ee] p-6 shadow-2xl" {...fadeInUp} transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}>
                 <div className="grid gap-4">
                     <div className="rounded-[1.5rem] border border-[#e0d4c2] bg-[#f7f2ea] p-5">
                         <div className="flex items-center justify-between mb-4">
-                            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f4b20]">Input Pair</span>
+                            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f4b20]">Inputs</span>
                             <span className="text-xs text-[#a1907a]">Step 01</span>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
@@ -322,7 +389,7 @@ export default function App() {
                             <div className="rounded-[1.25rem] overflow-hidden bg-[#e8dccb] aspect-[4/5]">
                                 <img
                                   src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=900&auto=format&fit=crop"
-                                  alt="Garment image input"
+                              alt="Catalog product input"
                                   className="h-full w-full object-cover"
                                 />
                             </div>
@@ -336,11 +403,11 @@ export default function App() {
                         </div>
                         <div className="space-y-3">
                             <div className="flex items-center justify-between rounded-full bg-white/10 px-4 py-3">
-                                <span className="text-sm">Pose and body alignment</span>
+                                <span className="text-sm">Shopper pose alignment</span>
                                 <span className="text-xs text-[#c2a476]">Complete</span>
                             </div>
                             <div className="flex items-center justify-between rounded-full bg-white/10 px-4 py-3">
-                                <span className="text-sm">Garment contour and angle match</span>
+                                <span className="text-sm">Catalog item and angle match</span>
                                 <span className="text-xs text-[#c2a476]">Complete</span>
                             </div>
                             <div className="flex items-center justify-between rounded-full bg-white/10 px-4 py-3">
@@ -367,43 +434,43 @@ export default function App() {
                         </div>
                     </div>
                 </div>
-            </motion.div>
+            </MotionDiv>
         </div>
       </section>
 
       {/* PRICING */}
       <section id="pricing" className="py-24 px-6 bg-[#f3ebde] border-b border-[#e0d4c2]">
         <div className="max-w-7xl mx-auto">
-          <motion.div className="max-w-3xl mx-auto text-center mb-12" {...fadeInUp}>
+          <MotionDiv className="max-w-3xl mx-auto text-center mb-12" {...fadeInUp}>
             <span className="inline-block py-1 px-3 rounded-full bg-[#f1e3cf] border border-[#e0d4c2] text-[#6f4b20] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
               Pricing
             </span>
             <h2 className="text-3xl md:text-4xl font-semibold text-[#2c2214] tracking-[0.06em] mb-4">
-              One simple plan.
+              One simple plan for brand teams.
             </h2>
             <p className="text-[#7b6b59] text-lg">
-              Flat monthly fee. No per-try-on surprises. Everything you need to add AI virtual try-on to your store.
+              Flat monthly fee. No per-try-on surprises. Everything you need to launch shopper-facing virtual try-on inside your store.
             </p>
-          </motion.div>
+          </MotionDiv>
 
-          <motion.div className="max-w-md mx-auto" {...fadeInUp} transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}>
+          <MotionDiv className="max-w-md mx-auto" {...fadeInUp} transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}>
             <div className="rounded-3xl border border-[#c2a476] bg-[#fbf6ee] p-10 shadow-lg">
               <div className="text-center mb-8">
-                <p className="text-4xl font-semibold text-[#2c2214] mb-1">$500</p>
-                <p className="text-sm text-[#7b6b59] tracking-[0.12em] uppercase">per month</p>
+                <p className="text-3xl font-semibold text-[#2c2214] mb-2">Custom pricing</p>
+                <p className="text-sm text-[#7b6b59] tracking-[0.08em] uppercase">We will contact you to discuss pricing</p>
               </div>
               <ul className="space-y-3 text-sm text-[#5a4c3b] mb-8">
                 <li className="flex items-center gap-3">
                   <Check className="text-[#6f4b20] shrink-0" size={18} />
-                  AI try-on on your product pages — no app, no downloads
+                  AI try-on inside your product pages or shopping flow
                 </li>
                 <li className="flex items-center gap-3">
                   <Check className="text-[#6f4b20] shrink-0" size={18} />
-                  SDK for React, Vue, or vanilla JS — drop into your stack
+                  Customers upload their photo and try catalog items on themselves
                 </li>
                 <li className="flex items-center gap-3">
                   <Check className="text-[#6f4b20] shrink-0" size={18} />
-                  Email support and integration help
+                  Integration support for your existing stack
                 </li>
                 <li className="flex items-center gap-3">
                   <Check className="text-[#6f4b20] shrink-0" size={18} />
@@ -418,21 +485,21 @@ export default function App() {
               </button>
             </div>
             <p className="mt-6 text-center text-xs text-[#a1907a] tracking-[0.16em] uppercase">
-              Cheaper than the rest. No hidden fees.
+              Built for testing, rollout, and iteration. No hidden fees.
             </p>
-          </motion.div>
+          </MotionDiv>
         </div>
       </section>
 
       {/* CTA SECTION */}
       <section id="contact" className="py-24 px-6 bg-[#f3ebde]">
-         <motion.div className="max-w-4xl mx-auto bg-[#2c2214] rounded-[2.5rem] p-12 lg:p-20 text-center relative overflow-hidden shadow-2xl" {...fadeInUp}>
+         <MotionDiv className="max-w-4xl mx-auto bg-[#2c2214] rounded-[2.5rem] p-12 lg:p-20 text-center relative overflow-hidden shadow-2xl" {...fadeInUp}>
              <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
              
              <div className="relative z-10">
-                 <h2 className="text-3xl md:text-5xl font-semibold text-[#f7f2ea] mb-6 tracking-[0.24em] uppercase">Refine your fit experience.</h2>
+                 <h2 className="text-3xl md:text-5xl font-semibold text-[#f7f2ea] mb-6 tracking-[0.18em] uppercase">Bring virtual try-on into your storefront.</h2>
                  <p className="text-[#e0d4c2] text-lg mb-10 max-w-2xl mx-auto">
-                     Join the pilot program for high-volume brands. We are accepting 5 partners for Q1 2026.
+                     Repro is for brands that want shoppers to upload a photo, select products from the catalog, and preview them before buying. We are accepting 5 pilot partners for Q1 2026.
                  </p>
 
                 <form onSubmit={handleSubmit} className="max-w-md mx-auto flex flex-col gap-4">
@@ -456,7 +523,7 @@ export default function App() {
                  )}
                  <p className="text-[#b3a38f] text-xs mt-6 tracking-[0.18em] uppercase">No credit card required · SOC2 Compliant</p>
              </div>
-         </motion.div>
+         </MotionDiv>
       </section>
 
       {/* FOOTER */}
@@ -464,7 +531,7 @@ export default function App() {
          <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
              <div className="col-span-2 md:col-span-1">
                  <span className="font-semibold text-xl tracking-[0.3em] uppercase text-[#2c2214]">REPRO</span>
-                 <p className="text-sm text-[#7b6b59] mt-4">Virtual try-on infrastructure for modern clothing brands.</p>
+                 <p className="text-sm text-[#7b6b59] mt-4">Virtual try-on infrastructure for clothing and footwear brands.</p>
              </div>
              <div>
                  <h4 className="font-bold text-[#2c2214] mb-4">Product</h4>
@@ -477,9 +544,9 @@ export default function App() {
              <div>
                  <h4 className="font-bold text-[#2c2214] mb-4">Why Repro</h4>
                  <ul className="space-y-2 text-sm text-[#7b6b59]">
-                     <li><span>Person + garment image pairing</span></li>
+                     <li><span>Shopper photo plus selected catalog item</span></li>
                      <li><span>Pose, angle, and lighting alignment</span></li>
-                     <li><span>Brand-controlled frontend delivery</span></li>
+                     <li><span>Brand-controlled storefront delivery</span></li>
                  </ul>
              </div>
              <div>
