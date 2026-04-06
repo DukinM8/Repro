@@ -214,8 +214,8 @@ export default function App() {
                             <div className="grid h-[calc(100%-3rem)] grid-cols-[1.1fr_0.9fr] gap-3">
                                 <div className="rounded-[1rem] overflow-hidden bg-[#efe5d8] relative min-h-0">
                                     <img
-                                      src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1200&auto=format&fit=crop"
-                                      alt="Generic product page product"
+                                      src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop"
+                                      alt="Plain white t-shirt product"
                                       className="h-full w-full object-cover"
                                     />
                                     <div className="absolute left-3 top-3 rounded-full bg-white/90 px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.12em] text-[#6f4b20]">
@@ -388,8 +388,8 @@ export default function App() {
                             </div>
                             <div className="rounded-[1.25rem] overflow-hidden bg-[#e8dccb] aspect-[4/5]">
                                 <img
-                                  src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=900&auto=format&fit=crop"
-                              alt="Catalog product input"
+                                  src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=900&auto=format&fit=crop"
+                                  alt="White t-shirt catalog product"
                                   className="h-full w-full object-cover"
                                 />
                             </div>
