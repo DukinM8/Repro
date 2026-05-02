@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Check, ArrowRight, Zap, Layers, Shield, Smartphone, Globe, BarChart3 } from 'lucide-react';
+import person1Image from './assets/person1.jpeg';
+import person2Image from './assets/person2.jpeg';
+import person3Image from './assets/person3.jpeg';
+import clothes1Image from './assets/clothes1.jpeg';
+import clothes2Image from './assets/clothes2.jpeg';
+import clothes3Image from './assets/clothes3.png';
+import result1Image from './assets/result1.jpeg';
+import result2Image from './assets/result2.jpeg';
+import result3Image from './assets/result3.jpeg';
+import tshirtImage from './assets/tshirt.jpeg';
+
 const MotionDiv = motion.div;
 
 // Scroll-in animation config
@@ -123,6 +134,61 @@ const StatCard = ({ value, label }) => (
     </div>
 );
 
+const ExamplePlaceholder = ({ title, description }) => (
+    <div className="rounded-[1.75rem] border border-dashed border-[#c2a476] bg-[#fbf6ee] p-5">
+        <div className="aspect-[4/5] rounded-[1.25rem] border border-[#e0d4c2] bg-[linear-gradient(180deg,#f7f2ea_0%,#efe3d1_100%)] flex items-center justify-center">
+            <div className="text-center px-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f4b20]">Future Example</p>
+                <p className="mt-3 text-sm text-[#7b6b59] leading-relaxed">{description}</p>
+            </div>
+        </div>
+        <p className="mt-4 text-sm font-semibold uppercase tracking-[0.12em] text-[#2c2214]">{title}</p>
+    </div>
+);
+
+const ExampleShowcase = ({ title, personImage, clothesImage, resultImage, clothesClassName = 'h-full w-full object-contain object-center' }) => (
+    <div className="rounded-[1.75rem] border border-[#e0d4c2] bg-[#fbf6ee] p-5 shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#2c2214]">{title}</p>
+            <span className="rounded-full border border-[#d8cab7] bg-white px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#6f4b20]">
+                Before / Product / Result
+            </span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+            <div className="rounded-[1.1rem] border border-[#e0d4c2] bg-white p-2">
+                <div className="mb-2 flex items-center justify-between">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6f4b20]">Person</span>
+                    <span className="text-[10px] text-[#a1907a]">Input</span>
+                </div>
+                <div className="aspect-[4/5] overflow-hidden rounded-[0.9rem] bg-[#efe3d1]">
+                    <img src={personImage} alt={`${title} person input`} className="h-full w-full object-cover object-top" />
+                </div>
+            </div>
+
+            <div className="rounded-[1.1rem] border border-[#e0d4c2] bg-white p-2">
+                <div className="mb-2 flex items-center justify-between">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6f4b20]">Clothes</span>
+                    <span className="text-[10px] text-[#a1907a]">Catalog</span>
+                </div>
+                <div className="aspect-[4/5] overflow-hidden rounded-[0.9rem] bg-white p-3">
+                    <img src={clothesImage} alt={`${title} clothing input`} className={clothesClassName} />
+                </div>
+            </div>
+        </div>
+
+        <div className="mt-3 rounded-[1.1rem] border border-[#d8cab7] bg-white p-2">
+            <div className="mb-2 flex items-center justify-between">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#2c2214]">Result</span>
+                <span className="text-[10px] text-[#a1907a]">Output</span>
+            </div>
+            <div className="aspect-[4/5] overflow-hidden rounded-[0.9rem] bg-[#efe3d1]">
+                <img src={resultImage} alt={`${title} try-on result`} className="h-full w-full object-cover object-top" />
+            </div>
+        </div>
+    </div>
+);
+
 // --- MAIN APP ---
 export default function App() {
   const db = useFirebase();
@@ -214,12 +280,12 @@ export default function App() {
                             <div className="grid h-[calc(100%-3rem)] grid-cols-[1.1fr_0.9fr] gap-3">
                                 <div className="rounded-[1rem] overflow-hidden bg-[#efe5d8] relative min-h-0">
                                     <img
-                                      src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop"
-                                      alt="Plain white t-shirt product"
+                                      src={tshirtImage}
+                                      alt="Catalog t-shirt shown on a sample product page"
                                       className="h-full w-full object-cover"
                                     />
                                     <div className="absolute left-3 top-3 rounded-full bg-white/90 px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.12em] text-[#6f4b20]">
-                                        Sample PDP
+                                        Catalog product
                                     </div>
                                 </div>
 
@@ -255,7 +321,7 @@ export default function App() {
                                             <div className="mt-2 flex gap-2">
                                                 <span className="h-4 w-4 rounded-full border border-[#d8cab7] bg-[#c7b39a]"></span>
                                                 <span className="h-4 w-4 rounded-full border border-[#d8cab7] bg-[#2f3640]"></span>
-                                                <span className="h-4 w-4 rounded-full border border-[#d8cab7] bg-[#efe8dc]"></span>
+                                                <span className="h-4 w-4 rounded-full border border-[#d8cab7] bg-white"></span>
                                             </div>
                                         </div>
                                         <div className="space-y-2">
@@ -381,15 +447,15 @@ export default function App() {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="rounded-[1.25rem] overflow-hidden bg-[#e8dccb] aspect-[4/5]">
                                 <img
-                                  src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=900&auto=format&fit=crop"
-                                  alt="Customer portrait input"
+                                  src={person1Image}
+                                  alt="Original shopper photo input"
                                   className="h-full w-full object-cover"
                                 />
                             </div>
                             <div className="rounded-[1.25rem] overflow-hidden bg-[#e8dccb] aspect-[4/5]">
                                 <img
-                                  src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=900&auto=format&fit=crop"
-                                  alt="White t-shirt catalog product"
+                                  src={clothes1Image}
+                                  alt="Catalog clothing input"
                                   className="h-full w-full object-cover"
                                 />
                             </div>
@@ -422,11 +488,11 @@ export default function App() {
                             <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f4b20]">Output Preview</span>
                             <span className="text-xs text-[#a1907a]">Step 03</span>
                         </div>
-                        <div className="rounded-[1.25rem] overflow-hidden aspect-[16/10] bg-[#e8dccb] relative">
+                        <div className="rounded-[1.25rem] overflow-hidden aspect-[4/5] bg-[#e8dccb] relative flex items-center justify-center">
                             <img
-                              src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=1200&auto=format&fit=crop"
-                              alt="Generated try-on preview"
-                              className="h-full w-full object-cover"
+                              src={result1Image}
+                              alt="Generated try-on result"
+                              className="h-full w-full object-cover object-top"
                             />
                             <div className="absolute bottom-4 left-4 rounded-full bg-[#f7f2ea]/95 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#2c2214] shadow-lg">
                                 Ready for PDP placement
@@ -438,8 +504,53 @@ export default function App() {
         </div>
       </section>
 
+      {/* EXAMPLE GALLERY */}
+      <section className="py-24 px-6 bg-[#f3ebde] border-b border-[#e0d4c2]">
+        <div className="max-w-7xl mx-auto">
+            <MotionDiv {...fadeInUp}>
+                <SectionHeader
+                    badge="More Examples"
+                    title="A few more try-on examples can live here."
+                    subtitle="This space is reserved for three additional before-and-after examples, so visitors can quickly see a wider range of outcomes once you upload them."
+                />
+            </MotionDiv>
+
+            <MotionDiv
+              className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+              variants={containerVariants}
+            >
+                <MotionDiv variants={itemVariants}>
+                    <ExampleShowcase
+                      title="Example 02"
+                      personImage={person2Image}
+                      clothesImage={clothes2Image}
+                      resultImage={result2Image}
+                      clothesClassName="h-full w-full scale-[1.18] -translate-y-2 object-contain object-center"
+                    />
+                </MotionDiv>
+                <MotionDiv variants={itemVariants}>
+                    <ExampleShowcase
+                      title="Example 03"
+                      personImage={person3Image}
+                      clothesImage={clothes3Image}
+                      resultImage={result3Image}
+                    />
+                </MotionDiv>
+                <MotionDiv variants={itemVariants}>
+                    <ExamplePlaceholder
+                      title="Example 04"
+                      description="Reserved for a third additional website example."
+                    />
+                </MotionDiv>
+            </MotionDiv>
+        </div>
+      </section>
+
       {/* PRICING */}
-      <section id="pricing" className="py-24 px-6 bg-[#f3ebde] border-b border-[#e0d4c2]">
+      <section id="pricing" className="py-24 px-6 bg-[#f7f2ea] border-b border-[#e0d4c2]">
         <div className="max-w-7xl mx-auto">
           <MotionDiv className="max-w-3xl mx-auto text-center mb-12" {...fadeInUp}>
             <span className="inline-block py-1 px-3 rounded-full bg-[#f1e3cf] border border-[#e0d4c2] text-[#6f4b20] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
