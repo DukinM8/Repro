@@ -134,18 +134,6 @@ const StatCard = ({ value, label }) => (
     </div>
 );
 
-const ExamplePlaceholder = ({ title, description }) => (
-    <div className="rounded-[1.75rem] border border-dashed border-[#c2a476] bg-[#fbf6ee] p-5">
-        <div className="aspect-[4/5] rounded-[1.25rem] border border-[#e0d4c2] bg-[linear-gradient(180deg,#f7f2ea_0%,#efe3d1_100%)] flex items-center justify-center">
-            <div className="text-center px-6">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f4b20]">Future Example</p>
-                <p className="mt-3 text-sm text-[#7b6b59] leading-relaxed">{description}</p>
-            </div>
-        </div>
-        <p className="mt-4 text-sm font-semibold uppercase tracking-[0.12em] text-[#2c2214]">{title}</p>
-    </div>
-);
-
 const ExampleShowcase = ({ title, personImage, clothesImage, resultImage, clothesClassName = 'h-full w-full object-contain object-center' }) => (
     <div className="rounded-[1.75rem] border border-[#e0d4c2] bg-[#fbf6ee] p-5 shadow-sm">
         <div className="flex items-center justify-between mb-4">
@@ -510,13 +498,13 @@ export default function App() {
             <MotionDiv {...fadeInUp}>
                 <SectionHeader
                     badge="More Examples"
-                    title="A few more try-on examples can live here."
-                    subtitle="This space is reserved for three additional before-and-after examples, so visitors can quickly see a wider range of outcomes once you upload them."
+                    title="More real try-on examples."
+                    subtitle="Two larger before-and-after examples give visitors a clearer look at shopper inputs, catalog products, and the generated results."
                 />
             </MotionDiv>
 
             <MotionDiv
-              className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
+              className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.1 }}
@@ -537,12 +525,6 @@ export default function App() {
                       personImage={person3Image}
                       clothesImage={clothes3Image}
                       resultImage={result3Image}
-                    />
-                </MotionDiv>
-                <MotionDiv variants={itemVariants}>
-                    <ExamplePlaceholder
-                      title="Example 04"
-                      description="Reserved for a third additional website example."
                     />
                 </MotionDiv>
             </MotionDiv>
