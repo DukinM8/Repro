@@ -238,6 +238,25 @@ const ColumnHead = ({ icon: Icon, title }) => (
     </div>
 );
 
+// --- PRICING MODEL ---
+// Single source of truth for the pricing section. Change the rate here and the
+// headline card, the table, the worked example and the guarantee copy all follow.
+const PRICE_SUBSCRIPTION = 250;
+const PRICE_PER_TRYON = 0.06;
+const TRYON_VOLUMES = [500, 1000, 3000, 5000, 10000, 15000, 30000, 50000, 75000, 100000];
+const EXAMPLE_VOLUME = 10000;
+
+const groupThousands = (s) => s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+// dollars with thousands separators; cents shown only when they are not zero
+const usd = (n) => {
+    const [whole, cents] = n.toFixed(2).split('.');
+    return cents === '00' ? `$${groupThousands(whole)}` : `$${groupThousands(whole)}.${cents}`;
+};
+
+// the per-try-on rate needs sub-cent precision, so it is formatted separately
+const rateLabel = `$${PRICE_PER_TRYON.toFixed(3).replace(/0+$/, '').replace(/\.$/, '')}`;
+
 // --- MAIN APP ---
 export default function App() {
   const db = useFirebase();
@@ -900,7 +919,7 @@ export default function App() {
           >
             <div className="flex-1 overflow-hidden rounded-[1.5rem] border border-[#e0d4c2] bg-[#fbf6ee] text-center">
               <div className="px-6 pt-8 pb-6">
-                <p className="text-4xl font-semibold tracking-tight text-[#2c2214] md:text-5xl">$250</p>
+                <p className="text-4xl font-semibold tracking-tight text-[#2c2214] md:text-5xl">{usd(PRICE_SUBSCRIPTION)}</p>
                 <p className="mt-1 text-lg text-[#7b6b59]">/ month</p>
               </div>
               <p className="bg-[#8a6239] px-4 py-2.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-[#f7f2ea]">
@@ -916,7 +935,7 @@ export default function App() {
 
             <div className="flex-1 overflow-hidden rounded-[1.5rem] border border-[#e0d4c2] bg-[#fbf6ee] text-center">
               <div className="px-6 pt-8 pb-6">
-                <p className="text-4xl font-semibold tracking-tight text-[#2c2214] md:text-5xl">$0.075</p>
+                <p className="text-4xl font-semibold tracking-tight text-[#2c2214] md:text-5xl">{rateLabel}</p>
                 <p className="mt-1 text-lg text-[#7b6b59]">/ AI try-on</p>
               </div>
               <p className="bg-[#8a6239] px-4 py-2.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-[#f7f2ea]">
@@ -938,34 +957,25 @@ export default function App() {
                       </th>
                       <th className="px-4 py-4 text-[0.7rem] font-semibold uppercase tracking-[0.12em]">Monthly subscription</th>
                       <th className="px-4 py-4 text-[0.7rem] font-semibold uppercase leading-tight tracking-[0.12em]">
-                        AI try-on usage<br /><span className="font-normal normal-case opacity-80">($0.075 each)</span>
+                        AI try-on usage<br /><span className="font-normal normal-case opacity-80">({rateLabel} each)</span>
                       </th>
                       <th className="px-4 py-4 text-[0.7rem] font-semibold uppercase tracking-[0.12em]">Total monthly cost</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {[
-                      [500, 37.5], [1000, 75], [3000, 225], [5000, 375], [10000, 750],
-                      [15000, 1125], [30000, 2250], [50000, 3750], [75000, 5625], [100000, 7500],
-                    ].map(([tryons, usage]) => {
-                      // thousands separators, and cents only when they are not zero
-                      const group = (s) => s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                      const money = (n) => {
-                        const [whole, cents] = n.toFixed(2).split('.');
-                        return cents === '00' ? `$${group(whole)}` : `$${group(whole)}.${cents}`;
-                      };
-                      const featured = tryons === 10000;
+                    {TRYON_VOLUMES.map((tryons) => {
+                      const usage = tryons * PRICE_PER_TRYON;
                       return (
                         <tr
                           key={tryons}
                           className={`border-t border-[#ece0cf] text-[0.9rem] ${
-                            featured ? 'bg-[#f1e3cf] font-medium' : 'odd:bg-white/50'
+                            tryons === EXAMPLE_VOLUME ? 'bg-[#f1e3cf] font-medium' : 'odd:bg-white/50'
                           }`}
                         >
-                          <td className="px-4 py-3 text-[#2c2214]">{group(String(tryons))}</td>
-                          <td className="px-4 py-3 text-[#7b6b59]">$250</td>
-                          <td className="px-4 py-3 text-[#7b6b59]">{money(usage)}</td>
-                          <td className="px-4 py-3 font-semibold text-[#2c2214]">{money(usage + 250)}</td>
+                          <td className="px-4 py-3 text-[#2c2214]">{groupThousands(String(tryons))}</td>
+                          <td className="px-4 py-3 text-[#7b6b59]">{usd(PRICE_SUBSCRIPTION)}</td>
+                          <td className="px-4 py-3 text-[#7b6b59]">{usd(usage)}</td>
+                          <td className="px-4 py-3 font-semibold text-[#2c2214]">{usd(usage + PRICE_SUBSCRIPTION)}</td>
                         </tr>
                       );
                     })}
@@ -982,7 +992,7 @@ export default function App() {
                 transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
                 <p className="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-[#2c2214]">
-                  What&rsquo;s included in $250 / month
+                  What&rsquo;s included in {usd(PRICE_SUBSCRIPTION)} / month
                 </p>
                 <ul className="space-y-0">
                   {[
@@ -1016,16 +1026,22 @@ export default function App() {
                     <Layers size={30} />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-2xl font-semibold text-[#2c2214]">10,000</p>
+                    <p className="text-2xl font-semibold text-[#2c2214]">{groupThousands(String(EXAMPLE_VOLUME))}</p>
                     <p className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-[#6f4b20]">
                       AI try-ons per month
                     </p>
                     <div className="mt-3 space-y-1 text-[0.88rem] text-[#5a4c3b]">
-                      <p>$250 — subscription</p>
-                      <p>$750 — usage <span className="text-[#7b6b59]">(10,000 × $0.075)</span></p>
+                      <p>{usd(PRICE_SUBSCRIPTION)} — subscription</p>
+                      <p>
+                        {usd(EXAMPLE_VOLUME * PRICE_PER_TRYON)} — usage{' '}
+                        <span className="text-[#7b6b59]">
+                          ({groupThousands(String(EXAMPLE_VOLUME))} × {rateLabel})
+                        </span>
+                      </p>
                     </div>
                     <p className="mt-4 border-t border-[#d8cab7] pt-3 text-right text-2xl font-semibold text-[#2c2214]">
-                      $1,000 <span className="text-base font-normal text-[#7b6b59]">/ month</span>
+                      {usd(EXAMPLE_VOLUME * PRICE_PER_TRYON + PRICE_SUBSCRIPTION)}{' '}
+                      <span className="text-base font-normal text-[#7b6b59]">/ month</span>
                     </p>
                   </div>
                 </div>
@@ -1041,7 +1057,7 @@ export default function App() {
           >
             {[
               { icon: Wallet, title: 'Pay only for actual usage',
-                desc: 'You never buy a usage package up front. The $0.075 is charged only for a try-on that completed successfully.' },
+                desc: `You never buy a usage package up front. The ${rateLabel} is charged only for a try-on that completed successfully.` },
               { icon: Shield, title: 'No prepayment, no packages',
                 desc: 'At the end of the month you pay for the try-ons that actually ran, and nothing else.' },
             ].map((c) => (
