@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Check, ArrowRight, Zap, Layers, Shield, Smartphone, Globe, BarChart3 } from 'lucide-react';
+import {
+  Check, ArrowRight, Zap, Layers, Shield, Smartphone, Globe, BarChart3,
+  Upload, Server, Cloud, Sparkles, Database, Monitor, Trash2,
+  ShieldCheck, Clock, Lock, UserCheck, Scale, Store,
+  TrendingUp, Timer, Package, ShoppingCart, RotateCcw, Users,
+  Code2, Headphones, RefreshCw, Wallet, Ban, CreditCard, ShoppingBag,
+} from 'lucide-react';
 import person1Image from './assets/person1.jpeg';
 import person2Image from './assets/person2.jpeg';
 import person3Image from './assets/person3.jpeg';
@@ -90,6 +96,8 @@ const Navbar = () => (
       <div className="hidden md:flex gap-8 text-sm font-medium text-[#7b6b59]">
         <a href="#features" className="hover:text-[#2c2214] transition-colors">Product</a>
         <a href="#workflow" className="hover:text-[#2c2214] transition-colors">How It Works</a>
+        <a href="#privacy" className="hover:text-[#2c2214] transition-colors">Privacy</a>
+        <a href="#analytics" className="hover:text-[#2c2214] transition-colors">Analytics</a>
         <a href="#pricing" className="hover:text-[#2c2214] transition-colors">Pricing</a>
         <a href="#contact" className="hover:text-[#2c2214] transition-colors">Contact</a>
       </div>
@@ -174,6 +182,59 @@ const ExampleShowcase = ({ title, personImage, clothesImage, resultImage, clothe
                 <img src={resultImage} alt={`${title} try-on result`} className="h-full w-full object-cover object-top" />
             </div>
         </div>
+    </div>
+);
+
+// --- PRIVACY / ANALYTICS / PRICING BUILDING BLOCKS ---
+
+// numbered step in the data-flow chain
+const FlowStep = ({ n, icon: Icon, title, desc }) => (
+    <div className="relative flex flex-col rounded-[1.25rem] border border-[#e0d4c2] bg-[#fbf6ee] p-5 h-full">
+        <div className="flex items-center gap-3 mb-3">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#a47c48] text-sm font-semibold text-white">
+                {n}
+            </span>
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#f1e3cf] text-[#6f4b20]">
+                <Icon size={17} />
+            </span>
+        </div>
+        <p className="text-[0.8rem] font-semibold uppercase tracking-[0.1em] text-[#2c2214] leading-snug mb-2">
+            {title}
+        </p>
+        <p className="text-[0.85rem] leading-relaxed text-[#7b6b59]">{desc}</p>
+    </div>
+);
+
+// icon + heading + body, used in the data-protection strip
+const PrivacyCard = ({ icon: Icon, title, desc }) => (
+    <div className="rounded-[1.25rem] border border-[#e0d4c2] bg-white p-5 h-full">
+        <span className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#f1e3cf] text-[#6f4b20]">
+            <Icon size={20} />
+        </span>
+        <p className="text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-[#2c2214] mb-2">{title}</p>
+        <p className="text-[0.85rem] leading-relaxed text-[#7b6b59]">{desc}</p>
+    </div>
+);
+
+// numbered metric row inside the two analytics columns
+const MetricRow = ({ n, icon: Icon, title, desc }) => (
+    <div className="flex items-start gap-4 border-b border-[#ece0cf] py-4 last:border-0 last:pb-0">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#c9a678] text-sm font-semibold text-white">
+            {n}
+        </span>
+        <div className="min-w-0 flex-1">
+            <p className="font-semibold text-[#2c2214] leading-snug">{title}</p>
+            <p className="mt-1 text-[0.85rem] leading-relaxed text-[#7b6b59]">{desc}</p>
+        </div>
+        <span className="hidden shrink-0 text-[#c2a476] sm:block"><Icon size={26} /></span>
+    </div>
+);
+
+// heading bar that caps each analytics column
+const ColumnHead = ({ icon: Icon, title }) => (
+    <div className="flex items-center gap-3 rounded-t-[1.25rem] bg-[#6b4c2b] px-5 py-4">
+        <Icon size={18} className="text-[#f1e3cf]" />
+        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#f7f2ea]">{title}</p>
     </div>
 );
 
@@ -531,54 +592,482 @@ export default function App() {
         </div>
       </section>
 
-      {/* PRICING */}
-      <section id="pricing" className="py-24 px-6 bg-[#f7f2ea] border-b border-[#e0d4c2]">
+      {/* PRIVACY — data flow and protection */}
+      <section id="privacy" className="py-24 px-6 bg-[#f7f2ea] border-b border-[#e0d4c2]">
         <div className="max-w-7xl mx-auto">
-          <MotionDiv className="max-w-3xl mx-auto text-center mb-12" {...fadeInUp}>
-            <span className="inline-block py-1 px-3 rounded-full bg-[#f1e3cf] border border-[#e0d4c2] text-[#6f4b20] text-xs font-semibold uppercase tracking-[0.25em] mb-4">
-              Pricing
-            </span>
-            <h2 className="text-3xl md:text-4xl font-semibold text-[#2c2214] tracking-[0.06em] mb-4">
-              One simple plan for brand teams.
-            </h2>
-            <p className="text-[#7b6b59] text-lg">
-              Flat monthly fee. No per-try-on surprises. Everything you need to launch shopper-facing virtual try-on inside your store.
+          <MotionDiv {...fadeInUp}>
+            <SectionHeader
+              badge="Privacy"
+              title="Data flow and privacy protection."
+              subtitle="AI virtual clothing try-on for fashion e-commerce. Below is the full path a shopper's photo takes — from upload through generation to automatic deletion."
+            />
+          </MotionDiv>
+
+          {/* seven-step chain */}
+          <motion.div
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7"
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }}
+            variants={containerVariants}
+          >
+            {[
+              { n: 1, icon: Upload,   title: 'Shopper uploads a photo',
+                desc: 'The shopper uploads their own photo through the widget on the brand’s site.' },
+              { n: 2, icon: Server,   title: 'Photo reaches our server',
+                desc: 'The photo is transmitted securely over HTTPS and received on the Repro server.' },
+              { n: 3, icon: Cloud,    title: 'Server sends photo and item to the AI API',
+                desc: 'We pass the shopper photo and the product image to an external try-on generation API (third-party provider).' },
+              { n: 4, icon: Sparkles, title: 'Provider returns the image',
+                desc: 'The AI provider returns the finished try-on image.' },
+              { n: 5, icon: Database, title: 'Temporary secured storage',
+                desc: 'The result is held for a short window (24–48 hours) with encryption at the storage layer.' },
+              { n: 6, icon: Monitor,  title: 'Result is shown to the shopper',
+                desc: 'The finished try-on is displayed to the shopper on the brand’s site.' },
+              { n: 7, icon: Trash2,   title: 'Automatic data deletion',
+                desc: 'The shopper photo and the results are deleted automatically once the retention window expires.' },
+            ].map((s) => (
+              <MotionDiv key={s.n} variants={itemVariants}>
+                <FlowStep {...s} />
+              </MotionDiv>
+            ))}
+          </motion.div>
+
+          {/* what the partner brand actually sees */}
+          <MotionDiv
+            className="mt-8 flex flex-col items-stretch gap-4 rounded-[1.5rem] border border-[#e0d4c2] bg-[#f1e3cf] p-6 lg:flex-row lg:items-center"
+            {...fadeInUp}
+          >
+            <div className="flex shrink-0 items-center gap-3 rounded-[1.1rem] border border-[#d8cab7] bg-white px-5 py-4 lg:w-64">
+              <Store size={22} className="text-[#6f4b20]" />
+              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#2c2214]">Partner brand</p>
+            </div>
+            <div className="hidden shrink-0 items-center text-[#c2a476] lg:flex"><ArrowRight size={22} /></div>
+            <div className="flex items-start gap-4 rounded-[1.1rem] bg-white/70 px-5 py-4">
+              <BarChart3 size={24} className="mt-0.5 shrink-0 text-[#6f4b20]" />
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#2c2214]">
+                  Aggregated usage statistics only
+                </p>
+                <p className="mt-1.5 text-[0.9rem] leading-relaxed text-[#6f5f4d]">
+                  The brand has no access to shopper photographs or personal data.
+                  Only de-identified, aggregated analytics is provided.
+                </p>
+              </div>
+            </div>
+          </MotionDiv>
+
+          {/* the six pillars */}
+          <MotionDiv className="mt-14" {...fadeInUp}>
+            <p className="mb-6 text-center text-sm font-semibold uppercase tracking-[0.22em] text-[#6f4b20]">
+              How we protect data
+            </p>
+          </MotionDiv>
+          <motion.div
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6"
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }}
+            variants={containerVariants}
+          >
+            {[
+              { icon: ShieldCheck, title: 'What we store',
+                desc: 'Only the shopper photo and the generated try-on image, strictly for the period required to run the service.' },
+              { icon: Users, title: 'Who has access',
+                desc: 'Neither the partner brand nor third parties can reach shopper photos. The brand receives aggregated statistics only, with no personal data.' },
+              { icon: Clock, title: 'How long',
+                desc: 'Images are retained for a limited time — typically 24–48 hours — after which they are deleted automatically.' },
+              { icon: Lock, title: 'Encryption',
+                desc: 'Data is transmitted over HTTPS. Stored data is protected by encryption at rest.' },
+              { icon: UserCheck, title: 'Shopper consent',
+                desc: 'Before uploading a photo the shopper receives clear information about how the data is processed and gives explicit consent.' },
+              { icon: Scale, title: 'GDPR alignment',
+                desc: 'The service follows GDPR principles: data minimisation, limited retention, transparency, the right to erasure, and protection of personal data.' },
+            ].map((c) => (
+              <MotionDiv key={c.title} variants={itemVariants}>
+                <PrivacyCard {...c} />
+              </MotionDiv>
+            ))}
+          </motion.div>
+
+          <MotionDiv
+            className="mt-8 flex items-start gap-4 rounded-[1.25rem] border border-[#e0d4c2] bg-[#fbf6ee] px-6 py-5"
+            {...fadeInUp}
+          >
+            <Lock size={22} className="mt-0.5 shrink-0 text-[#6f4b20]" />
+            <p className="text-[0.95rem] leading-relaxed text-[#5a4c3b]">
+              We take privacy seriously. Our goal is to deliver the best virtual try-on
+              experience while protecting shopper data at every step.
+            </p>
+          </MotionDiv>
+        </div>
+      </section>
+
+      {/* ANALYTICS — what we need from the brand */}
+      <section id="analytics" className="py-24 px-6 bg-[#f3ebde] border-b border-[#e0d4c2]">
+        <div className="max-w-7xl mx-auto">
+          <MotionDiv {...fadeInUp}>
+            <SectionHeader
+              badge="Analytics"
+              title="Measuring the real impact of try-on for your brand."
+              subtitle="We help you see how virtual try-on moves the business metrics that matter for your specific store: conversion, engagement, and returns. The analytics runs on anonymous data and access limited to try-on events alone."
+            />
+          </MotionDiv>
+
+          {/* three outcomes we track */}
+          <motion.div
+            className="grid grid-cols-1 gap-4 md:grid-cols-3"
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}
+            variants={containerVariants}
+          >
+            {[
+              { icon: TrendingUp, title: 'Higher conversion and sales', desc: 'More add-to-cart actions and more purchases.' },
+              { icon: Timer,      title: 'Higher engagement',           desc: 'Shoppers stay longer on the site and on the product page.' },
+              { icon: Package,    title: 'Fewer returns',               desc: 'Items fit better, so fewer of them come back.' },
+            ].map((c) => (
+              <MotionDiv key={c.title} variants={itemVariants}>
+                <div className="flex h-full items-start gap-4 rounded-[1.25rem] border border-[#e0d4c2] bg-[#fbf6ee] p-6">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#f1e3cf] text-[#6f4b20]">
+                    <c.icon size={20} />
+                  </span>
+                  <div>
+                    <p className="font-semibold text-[#2c2214]">{c.title}</p>
+                    <p className="mt-1 text-[0.9rem] leading-relaxed text-[#7b6b59]">{c.desc}</p>
+                  </div>
+                </div>
+              </MotionDiv>
+            ))}
+          </motion.div>
+
+          {/* who supplies what */}
+          <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <MotionDiv className="overflow-hidden rounded-[1.5rem] border border-[#e0d4c2] bg-[#fbf6ee]" {...fadeInUp}>
+              <ColumnHead icon={BarChart3} title="We collect ourselves" />
+              <div className="px-5 pb-5">
+                <MetricRow n={1} icon={Users} title="Try-ons per month"
+                  desc="Total number of completed try-on sessions." />
+                <MetricRow n={2} icon={UserCheck} title="Average try-ons per brand customer per month"
+                  desc="Shows how deeply the service is being used." />
+                <MetricRow n={5} icon={Clock} title="Average Virtual Try-On session length"
+                  desc="Time the shopper spends interacting with the feature inside the widget." />
+              </div>
+            </MotionDiv>
+
+            <MotionDiv
+              className="overflow-hidden rounded-[1.5rem] border border-[#c2a476] bg-[#fbf6ee]"
+              {...fadeInUp}
+              transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <ColumnHead icon={Database} title="Needed from the brand" />
+              <div className="px-5 pb-5">
+                <MetricRow n={3} icon={ShoppingCart} title="Add to Cart"
+                  desc="The add-to-cart event that follows a try-on." />
+                <MetricRow n={4} icon={ShoppingBag} title="Purchase / Order Created"
+                  desc="The purchase of an item tied to a try-on, whether bought directly or from the cart." />
+                <MetricRow n={6} icon={Timer} title="Time on Site / Product Page"
+                  desc="Aggregated time on site and on the product page. Ideally an A/B split: saw the try-on vs did not." />
+                <MetricRow n={7} icon={RotateCcw} title="Return Created"
+                  desc="Returns of items bought after a try-on, limited to orders we are linked to." />
+              </div>
+            </MotionDiv>
+          </div>
+
+          {/* how the events are stitched together */}
+          <MotionDiv className="mt-8 rounded-[1.5rem] border border-[#e0d4c2] bg-[#fbf6ee] p-6" {...fadeInUp}>
+            <p className="mb-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#6f4b20]">
+              How the events link together
+            </p>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+              {[
+                { icon: Smartphone,   text: 'The shopper uses Virtual Try-On' },
+                { icon: Code2,        text: 'An anonymous Session ID is created for that try-on' },
+                { icon: ShoppingCart, text: 'On add to cart we pass the Session ID as a cart attribute / order tag' },
+                { icon: ShoppingBag,  text: 'On purchase the order is tagged with the Session ID (order tag)' },
+                { icon: Package,      text: 'If the item comes back, the return is linked to the same Session ID' },
+              ].map((s, i) => (
+                <div key={i} className="relative rounded-[1.1rem] border border-[#ece0cf] bg-white p-4">
+                  <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#f1e3cf] text-[#6f4b20]">
+                    <s.icon size={18} />
+                  </span>
+                  <p className="text-[0.85rem] leading-relaxed text-[#6f5f4d]">{s.text}</p>
+                  {i < 4 && (
+                    <span className="absolute -right-3 top-1/2 hidden -translate-y-1/2 text-[#c2a476] lg:block">
+                      <ArrowRight size={16} />
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+            <p className="mt-5 rounded-[1.1rem] bg-[#f1e3cf] px-5 py-4 text-center text-[0.95rem] font-medium text-[#5a4c3b]">
+              We see the full path only for orders carrying a Virtual Try-On Session ID.
             </p>
           </MotionDiv>
 
-          <MotionDiv className="max-w-md mx-auto" {...fadeInUp} transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}>
-            <div className="rounded-3xl border border-[#c2a476] bg-[#fbf6ee] p-10 shadow-lg">
-              <div className="text-center mb-8">
-                <p className="text-3xl font-semibold text-[#2c2214] mb-2">Custom pricing</p>
-                <p className="text-sm text-[#7b6b59] tracking-[0.08em] uppercase">We will contact you to discuss pricing</p>
-              </div>
-              <ul className="space-y-3 text-sm text-[#5a4c3b] mb-8">
-                <li className="flex items-center gap-3">
-                  <Check className="text-[#6f4b20] shrink-0" size={18} />
-                  AI try-on inside your product pages or shopping flow
-                </li>
-                <li className="flex items-center gap-3">
-                  <Check className="text-[#6f4b20] shrink-0" size={18} />
-                  Customers upload their photo and try catalog items on themselves
-                </li>
-                <li className="flex items-center gap-3">
-                  <Check className="text-[#6f4b20] shrink-0" size={18} />
-                  Integration support for your existing stack
-                </li>
-                <li className="flex items-center gap-3">
-                  <Check className="text-[#6f4b20] shrink-0" size={18} />
-                  Cancel anytime — no long-term lock-in
-                </li>
-              </ul>
-              <button
-                onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
-                className="w-full bg-[#2c2214] text-[#f7f2ea] font-semibold py-4 rounded-full hover:bg-black transition-colors tracking-[0.16em] uppercase text-xs"
-              >
-                Request access
-              </button>
+          {/* explicit non-collection list */}
+          <MotionDiv className="mt-8 rounded-[1.5rem] border border-[#e0d4c2] bg-[#fbf6ee] p-6" {...fadeInUp}>
+            <p className="mb-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#6f4b20]">
+              What we never receive
+            </p>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+              {[
+                { icon: UserCheck,  text: 'Name, email, phone, or delivery address' },
+                { icon: CreditCard, text: 'Payment details such as card data' },
+                { icon: Users,      text: 'Access to the brand’s full sales and order history' },
+                { icon: Database,   text: 'Customer profiles and purchase history' },
+                { icon: Ban,        text: 'Any other personal data about shoppers' },
+              ].map((s, i) => (
+                <div key={i} className="flex items-start gap-3 rounded-[1.1rem] border border-[#ece0cf] bg-white p-4">
+                  <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f4ece0] text-[#a1907a]">
+                    <s.icon size={17} />
+                    <span className="absolute h-[1.5px] w-6 rotate-45 rounded-full bg-[#b98b5a]"></span>
+                  </span>
+                  <p className="text-[0.85rem] leading-relaxed text-[#6f5f4d]">{s.text}</p>
+                </div>
+              ))}
             </div>
-            <p className="mt-6 text-center text-xs text-[#a1907a] tracking-[0.16em] uppercase">
-              Built for testing, rollout, and iteration. No hidden fees.
+            <div className="mt-5 flex items-start gap-4 rounded-[1.1rem] bg-[#f1e3cf] px-5 py-4">
+              <ShieldCheck size={22} className="mt-0.5 shrink-0 text-[#6f4b20]" />
+              <p className="text-[0.95rem] leading-relaxed text-[#5a4c3b]">
+                We receive event data only for orders linked to a try-on: the add-to-cart click,
+                the fact of purchase, the fact of return — with no identification of the person.
+              </p>
+            </div>
+          </MotionDiv>
+
+          {/* the actual technical ask */}
+          <MotionDiv className="mt-8 rounded-[1.5rem] border border-[#e0d4c2] bg-[#fbf6ee] p-6" {...fadeInUp}>
+            <p className="mb-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#6f4b20]">
+              The technical ask
+            </p>
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <div className="rounded-[1.1rem] border border-[#ece0cf] bg-white p-5">
+                <div className="mb-4 flex items-center gap-3">
+                  <Store size={22} className="text-[#6f4b20]" />
+                  <p className="font-semibold text-[#2c2214]">Shopify integration</p>
+                </div>
+                <p className="mb-4 text-[0.9rem] leading-relaxed text-[#7b6b59]">
+                  We need access to events only for orders tagged with our Session ID
+                  (order tag / attribute).
+                </p>
+                <div className="flex flex-wrap items-center gap-2">
+                  {['Add to Cart', 'Order Created', 'Return Created'].map((e, i) => (
+                    <React.Fragment key={e}>
+                      {i > 0 && <span className="text-[#c2a476]">+</span>}
+                      <span className="rounded-full border border-[#d8cab7] bg-[#fbf7f0] px-3 py-1.5 text-[0.8rem] text-[#5a4c3b]">
+                        {e}
+                      </span>
+                    </React.Fragment>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-[1.1rem] border border-[#ece0cf] bg-white p-5">
+                <div className="mb-4 flex items-center gap-3">
+                  <BarChart3 size={22} className="text-[#6f4b20]" />
+                  <p className="font-semibold text-[#2c2214]">Web analytics (Google Analytics or similar)</p>
+                </div>
+                <p className="mb-3 text-[0.9rem] leading-relaxed text-[#7b6b59]">
+                  Access to aggregated metrics:
+                </p>
+                <p className="font-semibold text-[#2c2214]">Time on Site / Time on Product Page</p>
+                <p className="mt-1 text-[0.9rem] leading-relaxed text-[#7b6b59]">
+                  segmented by A/B test group: saw the try-on vs did not.
+                </p>
+              </div>
+            </div>
+            <div className="mt-5 flex items-start gap-4 rounded-[1.1rem] bg-[#f1e3cf] px-5 py-4">
+              <Check size={22} className="mt-0.5 shrink-0 text-[#6f4b20]" />
+              <p className="text-[0.95rem] leading-relaxed text-[#5a4c3b]">
+                This keeps the analytics transparent and lets us prove the real contribution of
+                virtual try-on to your growth — while respecting your customers' privacy.
+              </p>
+            </div>
+          </MotionDiv>
+        </div>
+      </section>
+
+      {/* PRICING */}
+      <section id="pricing" className="py-24 px-6 bg-[#f7f2ea] border-b border-[#e0d4c2]">
+        <div className="max-w-7xl mx-auto">
+          <MotionDiv {...fadeInUp}>
+            <SectionHeader
+              badge="Pricing"
+              title="Simple, usage-based pricing."
+              subtitle="Pay only for the AI try-ons you actually use. A fixed subscription plus a charge per successfully completed try-on — no packages, no prepayment."
+            />
+          </MotionDiv>
+
+          {/* the two components of the price */}
+          <MotionDiv
+            className="mx-auto mb-10 flex max-w-4xl flex-col items-stretch gap-4 sm:flex-row sm:items-center"
+            {...fadeInUp}
+          >
+            <div className="flex-1 overflow-hidden rounded-[1.5rem] border border-[#e0d4c2] bg-[#fbf6ee] text-center">
+              <div className="px-6 pt-8 pb-6">
+                <p className="text-4xl font-semibold tracking-tight text-[#2c2214] md:text-5xl">$250</p>
+                <p className="mt-1 text-lg text-[#7b6b59]">/ month</p>
+              </div>
+              <p className="bg-[#8a6239] px-4 py-2.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-[#f7f2ea]">
+                Fixed monthly subscription
+              </p>
+            </div>
+
+            <div className="flex shrink-0 items-center justify-center">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-[#e0d4c2] bg-white text-2xl font-light text-[#6f4b20]">
+                +
+              </span>
+            </div>
+
+            <div className="flex-1 overflow-hidden rounded-[1.5rem] border border-[#e0d4c2] bg-[#fbf6ee] text-center">
+              <div className="px-6 pt-8 pb-6">
+                <p className="text-4xl font-semibold tracking-tight text-[#2c2214] md:text-5xl">$0.075</p>
+                <p className="mt-1 text-lg text-[#7b6b59]">/ AI try-on</p>
+              </div>
+              <p className="bg-[#8a6239] px-4 py-2.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-[#f7f2ea]">
+                Per successful AI try-on
+              </p>
+            </div>
+          </MotionDiv>
+
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.55fr_1fr]">
+
+            {/* the volume table */}
+            <MotionDiv className="overflow-hidden rounded-[1.5rem] border border-[#e0d4c2] bg-[#fbf6ee]" {...fadeInUp}>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[520px] border-collapse text-center">
+                  <thead>
+                    <tr className="bg-[#6b4c2b] text-[#f7f2ea]">
+                      <th className="px-4 py-4 text-[0.7rem] font-semibold uppercase leading-tight tracking-[0.12em]">
+                        AI try-ons<br /><span className="font-normal opacity-80">/ month</span>
+                      </th>
+                      <th className="px-4 py-4 text-[0.7rem] font-semibold uppercase tracking-[0.12em]">Monthly subscription</th>
+                      <th className="px-4 py-4 text-[0.7rem] font-semibold uppercase leading-tight tracking-[0.12em]">
+                        AI try-on usage<br /><span className="font-normal normal-case opacity-80">($0.075 each)</span>
+                      </th>
+                      <th className="px-4 py-4 text-[0.7rem] font-semibold uppercase tracking-[0.12em]">Total monthly cost</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      [500, 37.5], [1000, 75], [3000, 225], [5000, 375], [10000, 750],
+                      [15000, 1125], [30000, 2250], [50000, 3750], [75000, 5625], [100000, 7500],
+                    ].map(([tryons, usage]) => {
+                      // thousands separators, and cents only when they are not zero
+                      const group = (s) => s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                      const money = (n) => {
+                        const [whole, cents] = n.toFixed(2).split('.');
+                        return cents === '00' ? `$${group(whole)}` : `$${group(whole)}.${cents}`;
+                      };
+                      const featured = tryons === 10000;
+                      return (
+                        <tr
+                          key={tryons}
+                          className={`border-t border-[#ece0cf] text-[0.9rem] ${
+                            featured ? 'bg-[#f1e3cf] font-medium' : 'odd:bg-white/50'
+                          }`}
+                        >
+                          <td className="px-4 py-3 text-[#2c2214]">{group(String(tryons))}</td>
+                          <td className="px-4 py-3 text-[#7b6b59]">$250</td>
+                          <td className="px-4 py-3 text-[#7b6b59]">{money(usage)}</td>
+                          <td className="px-4 py-3 font-semibold text-[#2c2214]">{money(usage + 250)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </MotionDiv>
+
+            {/* what the subscription buys, plus a worked example */}
+            <div className="space-y-6">
+              <MotionDiv
+                className="rounded-[1.5rem] border border-[#e0d4c2] bg-[#fbf6ee] p-6"
+                {...fadeInUp}
+                transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <p className="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-[#2c2214]">
+                  What&rsquo;s included in $250 / month
+                </p>
+                <ul className="space-y-0">
+                  {[
+                    { icon: Sparkles,   text: 'Repro AI Virtual Try-On platform' },
+                    { icon: Code2,      text: 'Website widget integration' },
+                    { icon: Server,     text: 'Technical infrastructure' },
+                    { icon: BarChart3,  text: 'Basic usage analytics' },
+                    { icon: Headphones, text: 'Technical support' },
+                    { icon: RefreshCw,  text: 'Product updates' },
+                  ].map((f) => (
+                    <li key={f.text} className="flex items-center gap-4 border-b border-[#ece0cf] py-3 last:border-0 last:pb-0">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#8a6239] text-white">
+                        <f.icon size={16} />
+                      </span>
+                      <span className="text-[0.9rem] leading-snug text-[#5a4c3b]">{f.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </MotionDiv>
+
+              <MotionDiv
+                className="rounded-[1.5rem] border border-[#e0d4c2] bg-[#f1e3cf] p-6"
+                {...fadeInUp}
+                transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <p className="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-[#2c2214]">
+                  Example
+                </p>
+                <div className="flex items-start gap-5">
+                  <span className="hidden shrink-0 items-center justify-center rounded-[0.9rem] border border-[#c2a476] p-3 text-[#6f4b20] sm:flex">
+                    <Layers size={30} />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-2xl font-semibold text-[#2c2214]">10,000</p>
+                    <p className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-[#6f4b20]">
+                      AI try-ons per month
+                    </p>
+                    <div className="mt-3 space-y-1 text-[0.88rem] text-[#5a4c3b]">
+                      <p>$250 — subscription</p>
+                      <p>$750 — usage <span className="text-[#7b6b59]">(10,000 × $0.075)</span></p>
+                    </div>
+                    <p className="mt-4 border-t border-[#d8cab7] pt-3 text-right text-2xl font-semibold text-[#2c2214]">
+                      $1,000 <span className="text-base font-normal text-[#7b6b59]">/ month</span>
+                    </p>
+                  </div>
+                </div>
+              </MotionDiv>
+            </div>
+          </div>
+
+          {/* the two guarantees */}
+          <motion.div
+            className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2"
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}
+            variants={containerVariants}
+          >
+            {[
+              { icon: Wallet, title: 'Pay only for actual usage',
+                desc: 'You never buy a usage package up front. The $0.075 is charged only for a try-on that completed successfully.' },
+              { icon: Shield, title: 'No prepayment, no packages',
+                desc: 'At the end of the month you pay for the try-ons that actually ran, and nothing else.' },
+            ].map((c) => (
+              <MotionDiv key={c.title} variants={itemVariants}>
+                <div className="flex h-full items-start gap-4 rounded-[1.25rem] border border-[#e0d4c2] bg-[#fbf6ee] p-6">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#8a6239] text-white">
+                    <c.icon size={20} />
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#2c2214]">{c.title}</p>
+                    <p className="mt-1.5 text-[0.9rem] leading-relaxed text-[#7b6b59]">{c.desc}</p>
+                  </div>
+                </div>
+              </MotionDiv>
+            ))}
+          </motion.div>
+
+          <MotionDiv className="mx-auto mt-10 max-w-md" {...fadeInUp}>
+            <button
+              onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
+              className="w-full rounded-full bg-[#2c2214] py-4 text-xs font-semibold uppercase tracking-[0.16em] text-[#f7f2ea] transition-colors hover:bg-black"
+            >
+              Request access
+            </button>
+            <p className="mt-5 text-center text-xs uppercase tracking-[0.16em] text-[#a1907a]">
+              Cancel anytime — no long-term lock-in
             </p>
           </MotionDiv>
         </div>
