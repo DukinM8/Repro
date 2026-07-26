@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, MotionConfig } from 'framer-motion';
 import {
   Check, ArrowRight, Zap, Layers, Shield, Smartphone, Globe, BarChart3,
   Upload, Server, Cloud, Sparkles, Database, Monitor, Trash2,
@@ -126,7 +126,7 @@ const SectionHeader = ({ badge, title, subtitle }) => (
 );
 
 const FeatureCard = ({ icon: Icon, title, desc }) => (
-    <div className="p-8 rounded-2xl bg-[#fbf6ee] border border-[#e0d4c2] shadow-sm hover:shadow-lg hover:border-[#a47c48] transition-all duration-300 group">
+    <div className="p-8 rounded-2xl bg-[#fbf6ee] border border-[#e0d4c2] shadow-sm hover:shadow-lg hover:border-[#a47c48] transition-[box-shadow,border-color] duration-300 group">
         <div className="w-12 h-12 rounded-xl bg-[#2c2214] flex items-center justify-center text-[#f7f2ea] mb-6 group-hover:bg-[#f7f2ea] group-hover:text-[#2c2214] transition-colors">
             <Icon size={24} />
         </div>
@@ -158,7 +158,7 @@ const ExampleShowcase = ({ title, personImage, clothesImage, resultImage, clothe
                     <span className="text-[10px] text-[#a1907a]">Input</span>
                 </div>
                 <div className="aspect-[4/5] overflow-hidden rounded-[0.9rem] bg-[#efe3d1]">
-                    <img src={personImage} alt={`${title} person input`} className="h-full w-full object-cover object-top" />
+                    <img src={personImage} alt={`${title} person input`} loading="lazy" decoding="async" className="h-full w-full object-cover object-top" />
                 </div>
             </div>
 
@@ -168,7 +168,7 @@ const ExampleShowcase = ({ title, personImage, clothesImage, resultImage, clothe
                     <span className="text-[10px] text-[#a1907a]">Catalog</span>
                 </div>
                 <div className="aspect-[4/5] overflow-hidden rounded-[0.9rem] bg-white p-3">
-                    <img src={clothesImage} alt={`${title} clothing input`} className={clothesClassName} />
+                    <img src={clothesImage} alt={`${title} clothing input`} loading="lazy" decoding="async" className={clothesClassName} />
                 </div>
             </div>
         </div>
@@ -179,7 +179,7 @@ const ExampleShowcase = ({ title, personImage, clothesImage, resultImage, clothe
                 <span className="text-[10px] text-[#a1907a]">Output</span>
             </div>
             <div className="aspect-[4/5] overflow-hidden rounded-[0.9rem] bg-[#efe3d1]">
-                <img src={resultImage} alt={`${title} try-on result`} className="h-full w-full object-cover object-top" />
+                <img src={resultImage} alt={`${title} try-on result`} loading="lazy" decoding="async" className="h-full w-full object-cover object-top" />
             </div>
         </div>
     </div>
@@ -290,6 +290,10 @@ export default function App() {
   };
 
   return (
+    /* reducedMotion="user" makes framer-motion honour the OS setting. A CSS media
+       query cannot do this on its own — framer-motion animates through inline
+       styles, so index.css only covers the plain CSS transitions. */
+    <MotionConfig reducedMotion="user">
     <div className="min-h-screen bg-[#f7f2ea]">
       <Navbar />
 
@@ -350,6 +354,8 @@ export default function App() {
                                     <img
                                       src={tshirtImage}
                                       alt="Catalog t-shirt shown on a sample product page"
+                                      fetchPriority="high"
+                                      decoding="async"
                                       className="h-full w-full object-cover"
                                     />
                                     <div className="absolute left-3 top-3 rounded-full bg-white/90 px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.12em] text-[#6f4b20]">
@@ -517,6 +523,8 @@ export default function App() {
                                 <img
                                   src={person1Image}
                                   alt="Original shopper photo input"
+                                  loading="lazy"
+                                  decoding="async"
                                   className="h-full w-full object-cover"
                                 />
                             </div>
@@ -524,6 +532,8 @@ export default function App() {
                                 <img
                                   src={clothes1Image}
                                   alt="Catalog clothing input"
+                                  loading="lazy"
+                                  decoding="async"
                                   className="h-full w-full object-cover"
                                 />
                             </div>
@@ -560,6 +570,8 @@ export default function App() {
                             <img
                               src={result1Image}
                               alt="Generated try-on result"
+                              loading="lazy"
+                              decoding="async"
                               className="h-full w-full object-cover object-top"
                             />
                             <div className="absolute bottom-4 left-4 rounded-full bg-[#f7f2ea]/95 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#2c2214] shadow-lg">
@@ -949,7 +961,7 @@ export default function App() {
             {/* the volume table */}
             <MotionDiv className="overflow-hidden rounded-[1.5rem] border border-[#e0d4c2] bg-[#fbf6ee]" {...fadeInUp}>
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[520px] border-collapse text-center">
+                <table className="w-full min-w-[520px] border-collapse text-center tabular-nums">
                   <thead>
                     <tr className="bg-[#6b4c2b] text-[#f7f2ea]">
                       <th className="px-4 py-4 text-[0.7rem] font-semibold uppercase leading-tight tracking-[0.12em]">
@@ -1101,17 +1113,34 @@ export default function App() {
                  </p>
 
                 <form onSubmit={handleSubmit} className="max-w-md mx-auto flex flex-col gap-4">
-                     <input name="email" type="email" placeholder="Work email" required className="w-full px-5 py-4 rounded-full text-[#2c2214] placeholder-[#b3a38f] focus:outline-none focus:ring-2 focus:ring-[#c2a476] shadow-sm bg-[#f7f2ea]" />
+                     {/* Labels are visually hidden, not absent: a placeholder disappears the
+                         moment someone starts typing, and a screen reader announces an
+                         unlabelled field as nothing at all. */}
+                     <label htmlFor="lead-email" className="sr-only">Work email</label>
                      <input
-                       name="role"
-                       type="text"
-                       placeholder="Your role"
+                       id="lead-email"
+                       name="email"
+                       type="email"
+                       autoComplete="email"
+                       spellCheck={false}
+                       placeholder="Work email"
                        required
                        className="w-full px-5 py-4 rounded-full text-[#2c2214] placeholder-[#b3a38f] focus:outline-none focus:ring-2 focus:ring-[#c2a476] shadow-sm bg-[#f7f2ea]"
                      />
-                     
-                     <button type="submit" disabled={formState !== 'idle'} className="w-full bg-[#c2a476] text-[#2c2214] font-semibold py-4 rounded-full hover:bg-[#b18d5f] transition-colors shadow-lg tracking-[0.18em] uppercase text-xs">
-                         {formState === 'loading' ? 'Processing...' : formState === 'success' ? 'Request Received' : 'Request Access'}
+
+                     <label htmlFor="lead-role" className="sr-only">Your role</label>
+                     <input
+                       id="lead-role"
+                       name="role"
+                       type="text"
+                       autoComplete="organization-title"
+                       placeholder="Your role, e.g. Head of E-commerce"
+                       required
+                       className="w-full px-5 py-4 rounded-full text-[#2c2214] placeholder-[#b3a38f] focus:outline-none focus:ring-2 focus:ring-[#c2a476] shadow-sm bg-[#f7f2ea]"
+                     />
+
+                     <button type="submit" disabled={formState !== 'idle'} className="w-full bg-[#c2a476] text-[#2c2214] font-semibold py-4 rounded-full hover:bg-[#b18d5f] transition-colors shadow-lg tracking-[0.18em] uppercase text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#2c2214] disabled:opacity-70">
+                         {formState === 'loading' ? 'Processing…' : formState === 'success' ? 'Request Received' : 'Request Access'}
                      </button>
                  </form>
                  {lastSubmission && (
@@ -1166,5 +1195,6 @@ export default function App() {
          </div>
       </footer>
     </div>
+    </MotionConfig>
   );
 }

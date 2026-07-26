@@ -29,3 +29,20 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background-color: #94A3B8;
 }
+
+/* Covers the plain CSS transitions and smooth scrolling. The framer-motion
+   animations are handled separately by <MotionConfig reducedMotion="user"> in
+   App.jsx, because those run through inline styles that CSS cannot reach. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
