@@ -102,12 +102,12 @@ const Navbar = () => (
         <a href="#contact" className="hover:text-[#2c2214] transition-colors">Contact</a>
       </div>
       <div className="flex gap-4">
-        <button
-          onClick={() => document.getElementById('contact').scrollIntoView({behavior: 'smooth'})}
-          className="border border-[#a47c48] text-[#2c2214] px-5 py-2.5 rounded-full text-sm font-medium hover:bg-[#a47c48] hover:text-white transition-colors"
+        <a
+          href="#contact"
+          className="inline-block border border-[#a47c48] text-[#2c2214] px-5 py-2.5 rounded-full text-sm font-medium hover:bg-[#a47c48] hover:text-white transition-colors"
         >
           Contact Sales
-        </button>
+        </a>
       </div>
     </div>
   </nav>
@@ -313,15 +313,15 @@ export default function App() {
                     Repro is virtual try-on infrastructure for clothing brands. A shopper uploads a photo, selects clothing or shoes from your catalog, and sees the product on themselves inside your own site or app.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                    <button
-                      onClick={() => document.getElementById('contact').scrollIntoView({behavior:'smooth'})}
+                    <a
+                      href="#contact"
                       className="bg-[#2c2214] text-[#f7f2ea] px-8 py-4 rounded-full font-semibold tracking-[0.16em] hover:bg-black transition-colors shadow-lg shadow-black/20 flex items-center justify-center gap-2"
                     >
                         Talk To Sales <ArrowRight size={18} />
-                    </button>
-                    <button onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })} className="bg-transparent text-[#2c2214] border border-[#c2a476] px-8 py-4 rounded-full font-medium tracking-[0.14em] hover:bg-[#f1e3cf] transition-colors">
+                    </a>
+                    <a href="#features" className="bg-transparent text-[#2c2214] border border-[#c2a476] px-8 py-4 rounded-full font-medium tracking-[0.14em] hover:bg-[#f1e3cf] transition-colors inline-flex items-center justify-center">
                         See how it works
-                    </button>
+                    </a>
                 </div>
             </MotionDiv>
             
@@ -381,12 +381,12 @@ export default function App() {
                                     </div>
 
                                     <div className="space-y-2 mb-3">
-                                        <button className="w-full rounded-full border border-[#2c2214] bg-[#2c2214] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#f7f2ea]">
+                                        <div className="w-full rounded-full border border-[#2c2214] bg-[#2c2214] px-3 py-2 text-center text-[10px] font-semibold uppercase tracking-[0.1em] text-[#f7f2ea]">
                                             Add To Cart
-                                        </button>
-                                        <button className="w-full rounded-full border border-[#c2a476] bg-[#f1e3cf] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#2c2214]">
+                                        </div>
+                                        <div className="w-full rounded-full border border-[#c2a476] bg-[#f1e3cf] px-3 py-2 text-center text-[10px] font-semibold uppercase tracking-[0.1em] text-[#2c2214]">
                                             Try This On
-                                        </button>
+                                        </div>
                                     </div>
 
                                     <div className="mt-auto rounded-[1rem] border border-[#e6dbcc] bg-[#fbf7f0] p-3 space-y-3">
@@ -1088,12 +1088,12 @@ export default function App() {
           </motion.div>
 
           <MotionDiv className="mx-auto mt-10 max-w-md" {...fadeInUp}>
-            <button
-              onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
-              className="w-full rounded-full bg-[#2c2214] py-4 text-xs font-semibold uppercase tracking-[0.16em] text-[#f7f2ea] transition-colors hover:bg-black"
+            <a
+              href="#contact"
+              className="block w-full rounded-full bg-[#2c2214] py-4 text-center text-xs font-semibold uppercase tracking-[0.16em] text-[#f7f2ea] transition-colors hover:bg-black"
             >
               Request access
-            </button>
+            </a>
             <p className="mt-5 text-center text-xs uppercase tracking-[0.16em] text-[#a1907a]">
               Cancel anytime — no long-term lock-in
             </p>
@@ -1188,9 +1188,9 @@ export default function App() {
          <div className="max-w-7xl mx-auto border-t border-[#e0d4c2] pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-[#a1907a]">
              <p>© 2026 Repro Technologies Inc.</p>
              <div className="flex gap-6 mt-4 md:mt-0">
-                 <a href="#contact" className="hover:text-[#6f4b20]">Privacy</a>
+                 <a href="#privacy" className="hover:text-[#6f4b20]">Privacy</a>
                  <a href="#contact" className="hover:text-[#6f4b20]">Terms</a>
-                 <a href="#contact" className="hover:text-[#6f4b20]">Security</a>
+                 <a href="#privacy" className="hover:text-[#6f4b20]">Security</a>
              </div>
          </div>
       </footer>
