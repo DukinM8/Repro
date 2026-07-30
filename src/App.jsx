@@ -239,12 +239,12 @@ const ColumnHead = ({ icon: Icon, title }) => (
 );
 
 // --- PRICING MODEL ---
-// Single source of truth for the pricing section. Change the rate here and the
-// headline card, the table, the worked example and the guarantee copy all follow.
+// The per-try-on rate is deliberately absent. It is not settled yet, and a
+// number on a public page is a number a prospect will hold us to — so the
+// section sells the shape of the pricing (fixed subscription + usage) and
+// leaves the rate to the conversation. Reinstate PRICE_PER_TRYON here and
+// the headline card, worked example and guarantee copy can follow again.
 const PRICE_SUBSCRIPTION = 250;
-const PRICE_PER_TRYON = 0.06;
-const TRYON_VOLUMES = [500, 1000, 3000, 5000, 10000, 15000, 30000, 50000, 75000, 100000];
-const EXAMPLE_VOLUME = 10000;
 
 const groupThousands = (s) => s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
@@ -254,8 +254,6 @@ const usd = (n) => {
     return cents === '00' ? `$${groupThousands(whole)}` : `$${groupThousands(whole)}.${cents}`;
 };
 
-// the per-try-on rate needs sub-cent precision, so it is formatted separately
-const rateLabel = `$${PRICE_PER_TRYON.toFixed(3).replace(/0+$/, '').replace(/\.$/, '')}`;
 
 // --- MAIN APP ---
 export default function App() {
@@ -947,8 +945,8 @@ export default function App() {
 
             <div className="flex-1 overflow-hidden rounded-[1.5rem] border border-[#e0d4c2] bg-[#fbf6ee] text-center">
               <div className="px-6 pt-8 pb-6">
-                <p className="text-4xl font-semibold tracking-tight text-[#2c2214] md:text-5xl">{rateLabel}</p>
-                <p className="mt-1 text-lg text-[#7b6b59]">/ AI try-on</p>
+                <p className="text-4xl font-semibold tracking-tight text-[#2c2214] md:text-5xl">Usage&#8209;based</p>
+                <p className="mt-1 text-lg text-[#7b6b59]">rate on request</p>
               </div>
               <p className="bg-[#8a6239] px-4 py-2.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-[#f7f2ea]">
                 Per successful AI try-on
@@ -956,109 +954,66 @@ export default function App() {
             </div>
           </MotionDiv>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.55fr_1fr]">
-
-            {/* the volume table */}
-            <MotionDiv className="overflow-hidden rounded-[1.5rem] border border-[#e0d4c2] bg-[#fbf6ee]" {...fadeInUp}>
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[520px] border-collapse text-center tabular-nums">
-                  <thead>
-                    <tr className="bg-[#6b4c2b] text-[#f7f2ea]">
-                      <th className="px-4 py-4 text-[0.7rem] font-semibold uppercase leading-tight tracking-[0.12em]">
-                        AI try-ons<br /><span className="font-normal opacity-80">/ month</span>
-                      </th>
-                      <th className="px-4 py-4 text-[0.7rem] font-semibold uppercase tracking-[0.12em]">Monthly subscription</th>
-                      <th className="px-4 py-4 text-[0.7rem] font-semibold uppercase leading-tight tracking-[0.12em]">
-                        AI try-on usage<br /><span className="font-normal normal-case opacity-80">({rateLabel} each)</span>
-                      </th>
-                      <th className="px-4 py-4 text-[0.7rem] font-semibold uppercase tracking-[0.12em]">Total monthly cost</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {TRYON_VOLUMES.map((tryons) => {
-                      const usage = tryons * PRICE_PER_TRYON;
-                      return (
-                        <tr
-                          key={tryons}
-                          className={`border-t border-[#ece0cf] text-[0.9rem] ${
-                            tryons === EXAMPLE_VOLUME ? 'bg-[#f1e3cf] font-medium' : 'odd:bg-white/50'
-                          }`}
-                        >
-                          <td className="px-4 py-3 text-[#2c2214]">{groupThousands(String(tryons))}</td>
-                          <td className="px-4 py-3 text-[#7b6b59]">{usd(PRICE_SUBSCRIPTION)}</td>
-                          <td className="px-4 py-3 text-[#7b6b59]">{usd(usage)}</td>
-                          <td className="px-4 py-3 font-semibold text-[#2c2214]">{usd(usage + PRICE_SUBSCRIPTION)}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
+          {/* Without a published rate every row of the old volume table read the
+            same $250, so the table was removed rather than left saying nothing
+            ten times over. */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
+            <MotionDiv
+              className="rounded-[1.5rem] border border-[#e0d4c2] bg-[#fbf6ee] p-6"
+              {...fadeInUp}
+              transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <p className="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-[#2c2214]">
+                What&rsquo;s included in {usd(PRICE_SUBSCRIPTION)} / month
+              </p>
+              <ul className="space-y-0">
+                {[
+                  { icon: Sparkles,   text: 'Repro AI Virtual Try-On platform' },
+                  { icon: Code2,      text: 'Website widget integration' },
+                  { icon: Server,     text: 'Technical infrastructure' },
+                  { icon: BarChart3,  text: 'Basic usage analytics' },
+                  { icon: Headphones, text: 'Technical support' },
+                  { icon: RefreshCw,  text: 'Product updates' },
+                ].map((f) => (
+                  <li key={f.text} className="flex items-center gap-4 border-b border-[#ece0cf] py-3 last:border-0 last:pb-0">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#8a6239] text-white">
+                      <f.icon size={16} />
+                    </span>
+                    <span className="text-[0.9rem] leading-snug text-[#5a4c3b]">{f.text}</span>
+                  </li>
+                ))}
+              </ul>
             </MotionDiv>
 
-            {/* what the subscription buys, plus a worked example */}
-            <div className="space-y-6">
-              <MotionDiv
-                className="rounded-[1.5rem] border border-[#e0d4c2] bg-[#fbf6ee] p-6"
-                {...fadeInUp}
-                transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <p className="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-[#2c2214]">
-                  What&rsquo;s included in {usd(PRICE_SUBSCRIPTION)} / month
-                </p>
-                <ul className="space-y-0">
-                  {[
-                    { icon: Sparkles,   text: 'Repro AI Virtual Try-On platform' },
-                    { icon: Code2,      text: 'Website widget integration' },
-                    { icon: Server,     text: 'Technical infrastructure' },
-                    { icon: BarChart3,  text: 'Basic usage analytics' },
-                    { icon: Headphones, text: 'Technical support' },
-                    { icon: RefreshCw,  text: 'Product updates' },
-                  ].map((f) => (
-                    <li key={f.text} className="flex items-center gap-4 border-b border-[#ece0cf] py-3 last:border-0 last:pb-0">
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#8a6239] text-white">
-                        <f.icon size={16} />
+            <MotionDiv
+              className="rounded-[1.5rem] border border-[#e0d4c2] bg-[#f1e3cf] p-6"
+              {...fadeInUp}
+              transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <p className="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-[#2c2214]">
+                How billing works
+              </p>
+              <div className="flex items-start gap-5">
+                <span className="hidden shrink-0 items-center justify-center rounded-[0.9rem] border border-[#c2a476] p-3 text-[#6f4b20] sm:flex">
+                  <Layers size={30} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-2xl font-semibold text-[#2c2214]">How a month adds up</p>
+                  <div className="mt-3 space-y-1 text-[0.88rem] text-[#5a4c3b]">
+                    <p>{usd(PRICE_SUBSCRIPTION)} — fixed subscription</p>
+                    <p>
+                      Usage —{' '}
+                      <span className="text-[#7b6b59]">
+                        charged per successfully completed AI try-on
                       </span>
-                      <span className="text-[0.9rem] leading-snug text-[#5a4c3b]">{f.text}</span>
-                    </li>
-                  ))}
-                </ul>
-              </MotionDiv>
-
-              <MotionDiv
-                className="rounded-[1.5rem] border border-[#e0d4c2] bg-[#f1e3cf] p-6"
-                {...fadeInUp}
-                transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <p className="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-[#2c2214]">
-                  Example
-                </p>
-                <div className="flex items-start gap-5">
-                  <span className="hidden shrink-0 items-center justify-center rounded-[0.9rem] border border-[#c2a476] p-3 text-[#6f4b20] sm:flex">
-                    <Layers size={30} />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-2xl font-semibold text-[#2c2214]">{groupThousands(String(EXAMPLE_VOLUME))}</p>
-                    <p className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-[#6f4b20]">
-                      AI try-ons per month
-                    </p>
-                    <div className="mt-3 space-y-1 text-[0.88rem] text-[#5a4c3b]">
-                      <p>{usd(PRICE_SUBSCRIPTION)} — subscription</p>
-                      <p>
-                        {usd(EXAMPLE_VOLUME * PRICE_PER_TRYON)} — usage{' '}
-                        <span className="text-[#7b6b59]">
-                          ({groupThousands(String(EXAMPLE_VOLUME))} × {rateLabel})
-                        </span>
-                      </p>
-                    </div>
-                    <p className="mt-4 border-t border-[#d8cab7] pt-3 text-right text-2xl font-semibold text-[#2c2214]">
-                      {usd(EXAMPLE_VOLUME * PRICE_PER_TRYON + PRICE_SUBSCRIPTION)}{' '}
-                      <span className="text-base font-normal text-[#7b6b59]">/ month</span>
                     </p>
                   </div>
+                  <p className="mt-4 border-t border-[#d8cab7] pt-3 text-[0.88rem] text-[#5a4c3b]">
+                    Tell us the volume you expect and we will quote the usage rate.
+                  </p>
                 </div>
-              </MotionDiv>
-            </div>
+              </div>
+            </MotionDiv>
           </div>
 
           {/* the two guarantees */}
@@ -1069,7 +1024,7 @@ export default function App() {
           >
             {[
               { icon: Wallet, title: 'Pay only for actual usage',
-                desc: `You never buy a usage package up front. The ${rateLabel} is charged only for a try-on that completed successfully.` },
+                desc: 'You never buy a usage package up front. Usage is charged only for a try-on that completed successfully.' },
               { icon: Shield, title: 'No prepayment, no packages',
                 desc: 'At the end of the month you pay for the try-ons that actually ran, and nothing else.' },
             ].map((c) => (
